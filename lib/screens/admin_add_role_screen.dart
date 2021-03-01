@@ -48,7 +48,6 @@ class RoleAddState extends State<RoleAdd> {
 
   Role role = Role();
   String name;
-
   bool isInit = false;
   @override
   Widget build(BuildContext context) {
