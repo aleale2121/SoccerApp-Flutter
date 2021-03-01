@@ -5,9 +5,7 @@ import 'package:soccer_app/screens/admin_add_role_screen.dart';
 import 'package:soccer_app/screens/route.dart';
 import 'package:soccer_app/widgets/role_comp_admin.dart';
 import '../blocs/Role/role.dart';
-import '../blocs/role/role_bloc.dart';
-import '../blocs/role/role_events.dart';
-import '../blocs/role/role_state.dart';
+
 import 'splash_screen.dart';
 
 class AdminRoleScreen extends StatelessWidget {

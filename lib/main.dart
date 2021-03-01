@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'blocs/role/role_bloc.dart';
-import 'blocs/role/role_events.dart';
+import 'bloc_observer.dart';
 import 'blocs/user/user.dart';
-import 'blocs/user/user_bloc.dart';
 import 'repository/role_repository.dart';
 import 'data_provider/data.dart';
 import 'repository/repository.dart';
@@ -13,13 +11,12 @@ import 'blocs/result/result.dart';
 import 'blocs/club/club.dart';
 import 'blocs/Role/role.dart';
 import 'screens/route.dart';
-import 'bloc_observer.dart';
 import 'util/util.dart';
 import 'package:http/http.dart' as http;
 import 'repository/user_repository.dart';
 
 void main() {
-  //Bloc.observer = SimpleBlocObserver();
+  Bloc.observer = SimpleBlocObserver();
 
   final UserRepository userRepository = UserRepository(
       userDataProvider: UserDataProvider(httpClient: http.Client()));
