@@ -12,10 +12,4 @@ class SimpleBlocObserver extends BlocObserver {
     print('onTransition $transition');
     super.onTransition(bloc, transition);
   }
-
-  @override
-  void onError(Cubit cubit, Object error, StackTrace stackTrace) {
-    print('onError $error');
-    super.onError(cubit, error, stackTrace);
-  }
 }

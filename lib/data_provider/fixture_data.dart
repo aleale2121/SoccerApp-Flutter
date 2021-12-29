@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
 
+import 'package:soccer_app/shared/constants.dart';
+
 import '../models/http_exception.dart';
 import '../models/fixture.dart';
 import 'package:http/http.dart' as http;
@@ -15,9 +17,9 @@ class FixtureDataProvider {
 
   Future<List<Fixture>> getAndSetFixtures() async {
     List<Fixture> fixtures = [];
-    final url = 'http://192.168.137.1:8080/v1/fixture';
+    final url = '$baseUrl/fixture';
     try {
-      final response = await httpClient.get(url);
+      final response = await httpClient.get(Uri.parse(url));
       print(response.statusCode);
       if (response.statusCode == 200) {
         final extractedData = json.decode(response.body) as List<dynamic>;
@@ -39,10 +41,10 @@ class FixtureDataProvider {
 
   Future<Fixture> getFixture(String fixtureId) async {
     Fixture fixture;
-    final url = 'http://192.168.137.1:8080/v1/fixture';
+    final url = '$baseUrl/fixture';
     try {
       final response = await httpClient.get(
-        url,
+        Uri.parse(url),
       );
       if (response.statusCode == 500) {
         throw HttpException('Error Occurred');
@@ -61,7 +63,7 @@ class FixtureDataProvider {
 
   Future<Fixture> postFixture(Fixture fixture) async {
     Fixture fxtr;
-    final url = 'http://192.168.137.1:8080/v1/fixture';
+    final url = '$baseUrl/fixture';
     Util util = new Util();
     String token = await util.getUserToken();
     try {
@@ -69,7 +71,7 @@ class FixtureDataProvider {
           ? fixture.clubs.map((club) => club.toJson()).toList()
           : null;
       final response = await httpClient.post(
-        url,
+        Uri.parse(url),
         body: json.encode(
           {
             'id': fixture.id,
@@ -102,14 +104,14 @@ class FixtureDataProvider {
 
   Future<Fixture> putFixture(Fixture fixture) async {
     Fixture fxtr;
-    final url = 'http://192.168.137.1:8080/v1/fixture/${fixture.id}';
+    final url = '$baseUrl/fixture/${fixture.id}';
     String token = await util.getUserToken();
     try {
       List<Map> clubs = fixture.clubs != null
           ? fixture.clubs.map((club) => club.toJson()).toList()
           : null;
       final response = await httpClient.put(
-        url,
+        Uri.parse(url),
         body: json.encode(
           {
             'id': fixture.id,
@@ -141,12 +143,12 @@ class FixtureDataProvider {
   }
 
   Future<void> deleteFixture(String id) async {
-    final url = 'http://192.168.137.1:8080/v1/fixture/$id';
+    final url = '$baseUrl/fixture/$id';
     Util util = new Util();
     String token = await util.getUserToken();
     try {
       final response = await httpClient.delete(
-        url,
+        Uri.parse(url),
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
       print(response.statusCode);

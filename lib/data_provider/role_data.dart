@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
+import 'package:soccer_app/shared/constants.dart';
+
 import '../models/http_exception.dart';
 import '../models/user.dart';
 import '../util/util.dart';
@@ -16,11 +18,11 @@ class RoleDataProvider {
   Util util = new Util();
 
   Future<List<Role>> getAndSetRoles() async {
-    final url = 'http://192.168.137.1:8080/v1/role';
+    final url = '$baseUrl/role';
     try {
       String token = await util.getUserToken();
       String expiry = await util.getExpiryTime();
-      final response = await httpClient.get(url, headers: {
+      final response = await httpClient.get(Uri.parse(url), headers: {
         HttpHeaders.contentTypeHeader: "application/json",
         HttpHeaders.authorizationHeader: "Bearer $token",
         'expiry': expiry
@@ -42,12 +44,12 @@ class RoleDataProvider {
 
   Future<Role> postRole(Role role) async {
     Role _role;
-    final url = 'http://192.168.137.1:8080/v1/role';
+    final url = '$baseUrl/role';
     Util util = new Util();
     String token = await util.getUserToken();
     try {
       final response = await httpClient.post(
-        url,
+        Uri.parse(url),
         body: json.encode(
           {
             'name': role.name,
@@ -76,10 +78,10 @@ class RoleDataProvider {
 
   Future<Role> getRole(String clubId) async {
     Role role;
-    final url = 'http://192.168.137.1:8080/v1/role';
+    final url = '$baseUrl/role';
     try {
       final response = await httpClient.get(
-        url,
+        Uri.parse(url),
       );
       if (response.statusCode == 500) {
         throw HttpException('Error Occurred');
@@ -99,10 +101,10 @@ class RoleDataProvider {
 
   Future<Role> putRole(Role role) async {
     Role cl;
-    final url = 'http://192.168.137.1:8080/v1/role/${role.id}';
+    final url = '$baseUrl/role/${role.id}';
     try {
       final response = await httpClient.put(
-        url,
+        Uri.parse(url),
         body: json.encode({
           'id': role.id,
           'name': role.name,
@@ -122,12 +124,12 @@ class RoleDataProvider {
   }
 
   Future<void> deleteRole(String id) async {
-    final url = 'http://192.168.137.1:8080/v1/role/$id';
+    final url = '$baseUrl/role/$id';
     Util util = new Util();
     String token = await util.getUserToken();
     try {
       final response = await httpClient.delete(
-        url,
+        Uri.parse(url),
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
       print(response.statusCode);

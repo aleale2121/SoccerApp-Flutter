@@ -80,7 +80,6 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title:
@@ -100,12 +99,15 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
             return Center(child: CircularProgressIndicator());
           }
           if (state is ResultPostingErrorState) {
-            _scaffoldKey.currentState.showSnackBar(
-                SnackBar(content: Text('Error Adding the result')));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error Adding the result'),
+              ),
+            );
           }
           if (state is ResultUpdatingState) {
-            _scaffoldKey.currentState.showSnackBar(
-                SnackBar(content: Text('Error Updating the result')));
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error updating the result')));
           }
           if ((state is ResultPostedState) || (state is ResultUpdatedState)) {
             BlocProvider.of<FixturesBloc>(context).add(GetFixturesEvent());

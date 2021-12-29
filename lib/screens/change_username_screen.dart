@@ -54,7 +54,6 @@ class UsernameChangeScreenState extends State<UsernameChangeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text("Edit Account"),

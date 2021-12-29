@@ -14,23 +14,23 @@ class AdminResultsScreen extends StatelessWidget {
     return BlocConsumer<ResultsBloc, ResultStates>(
       listener: (_, state) {
         if (state is ResultDeletingState) {
-          scaffoldKey.currentState.removeCurrentSnackBar();
-          scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text('Deleting result.....'),
-          ));
+           ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Deleting result'),
+            ),
+          );
         }
         if (state is ResultDeletedState) {
-          scaffoldKey.currentState.removeCurrentSnackBar();
+
           BlocProvider.of<ResultsBloc>(context, listen: false)
               .add(GetResultsEvent());
         }
         if (state is ResultsDeletingErrorState) {
-          scaffoldKey.currentState.removeCurrentSnackBar();
-          scaffoldKey.currentState.showSnackBar(SnackBar(
-              content: Text('Result Deleting error'),
-              duration: Duration(
-                seconds: 5,
-              )));
+           ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to delete result'),
+            ),
+          );
         }
       },
       builder: (_, state) {

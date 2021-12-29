@@ -25,7 +25,7 @@ class DeleteAccountPage extends StatelessWidget {
                   Text("Are You Sure You want to delete your Account??",style: TextStyle(
                     color: Colors.redAccent
                   ),),
-                  FlatButton(
+                  TextButton(
                       onPressed: () async{
                         Util util = new Util();
                         User user=await util.getUserInformation();
@@ -35,7 +35,7 @@ class DeleteAccountPage extends StatelessWidget {
 
                       },
                       child: Text("YES")),
-                  FlatButton(
+                  TextButton(
                       onPressed: () {
 
                         Navigator.of(context).pop();
@@ -47,5 +47,3 @@ class DeleteAccountPage extends StatelessWidget {
           }
 
 }
-//
-//

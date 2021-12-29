@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/role/role_bloc.dart';
-import '../blocs/role/role_events.dart';
-import '../blocs/role/role_state.dart';
+import 'package:soccer_app/blocs/Role/role.dart';
 import '../models/model.dart';
 
 class RoleAdd extends StatefulWidget {
@@ -55,7 +53,6 @@ class RoleAddState extends State<RoleAdd> {
       onWillPop: _willPopPressed,
       child: Scaffold(
         key: _scaffoldKey,
-        resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: Text("Add Role"),

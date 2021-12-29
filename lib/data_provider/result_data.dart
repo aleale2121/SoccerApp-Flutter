@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
+import 'package:soccer_app/shared/constants.dart';
 import 'package:soccer_app/util/util.dart';
 import '../models/http_exception.dart';
 import '../models/result.dart';
@@ -16,10 +17,10 @@ class ResultDataProvider {
   Future<List<Result>> getAndSetResults() async {
     print('------------fetching result------');
 
-    final url = 'http://192.168.137.1:8080/v1/result';
+    final url = '$baseUrl/result';
     try {
       final response = await httpClient.get(
-        url,
+        Uri.parse(url)
       );
 
       if (response.statusCode == 200) {
@@ -43,10 +44,10 @@ class ResultDataProvider {
 
   Future<Result> getResult(String resultId) async {
     Result result;
-    final url = 'http://192.168.137.1:8080/v1/result';
+    final url = '$baseUrl/result';
     try {
       final response = await httpClient.get(
-        url,
+       Uri.parse(url)
       );
       if (response.statusCode == 500) {
         throw HttpException('Error Occurred');
@@ -67,10 +68,10 @@ class ResultDataProvider {
     Result res;
     Util util = new Util();
     String token = await util.getUserToken();
-    final url = 'http://192.168.137.1:8080/v1/result';
+    final url = '$baseUrl/result';
     try {
       final response = await httpClient.post(
-        url,
+        Uri.parse(url),
         body: json.encode({
           'fixture_id': result.fixtureId,
           'first_club_score': result.firstClubScore,
@@ -101,10 +102,10 @@ class ResultDataProvider {
     Result res;
     Util util = new Util();
     String token = await util.getUserToken();
-    final url = 'http://192.168.137.1:8080/v1/result/${result.id}';
+    final url = '$baseUrl/result/${result.id}';
     try {
       final response = await httpClient.put(
-        url,
+        Uri.parse(url),
         body: json.encode({
           'id': result.id,
           'fixture_id': result.fixtureId,
@@ -131,12 +132,12 @@ class ResultDataProvider {
   }
 
   Future<void> deleteResult(String id) async {
-    final url = 'http://192.168.137.1:8080/v1/result/$id';
+    final url = '$baseUrl/result/$id';
     Util util = new Util();
     String token = await util.getUserToken();
     try {
       final response = await httpClient.delete(
-        url,
+        Uri.parse(url),
         headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
       );
       if (response.statusCode == 500) {

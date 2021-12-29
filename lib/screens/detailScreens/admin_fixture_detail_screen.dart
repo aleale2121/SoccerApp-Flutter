@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:soccer_app/blocs/fixture/fixture.dart';
-import 'package:soccer_app/blocs/fixture/fixtures_bloc.dart';
-import 'package:soccer_app/models/fixture.dart';
 import 'package:soccer_app/screens/route.dart';
 
 

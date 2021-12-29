@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:soccer_app/blocs/role/role.dart';
+import 'package:soccer_app/blocs/Role/role.dart';
 import 'package:soccer_app/blocs/user/user.dart';
-import '../blocs/role/role_bloc.dart';
-import '../blocs/role/role_state.dart';
 import '../models/model.dart';
 import '../blocs/club/club.dart';
 
@@ -52,7 +50,6 @@ class AdminEditUserRoleState extends State<AdminEditUserRole> {
       onWillPop: _willPopPressed,
       child: Scaffold(
         key: _scaffoldKey,
-        resizeToAvoidBottomPadding: false,
         appBar: AppBar(
           title: Text("Edit User Role"),
           actions: [
@@ -71,8 +68,11 @@ class AdminEditUserRoleState extends State<AdminEditUserRole> {
             }
 
             if (state is UserUpdatingErrorState) {
-              _scaffoldKey.currentState.showSnackBar(
-                  SnackBar(content: Text('Error Editing the role')));
+               ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Error Editing the role'),
+                ),
+              );
             }
             if (state is UserUpdatedState) {
               BlocProvider.of<UserBloc>(context).add(GetUsersEvent());

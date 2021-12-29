@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:soccer_app/models/club.dart';
+import 'package:soccer_app/shared/constants.dart';
 
 import '../models/http_exception.dart';
-import '../models/result.dart';
 import 'package:http/http.dart' as http;
 
 class ClubDataProvider {
@@ -14,9 +14,9 @@ class ClubDataProvider {
 
   List<Club> clubs = [];
   Future<List<Club>> getAndSetClubs() async {
-    final url = 'http://192.168.137.1:8080/v1/club';
+    final url = '$baseUrl/club';
     try {
-      final response = await httpClient.get(url);
+      final response = await httpClient.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         final extractedData = json.decode(response.body) as List<dynamic>;
@@ -35,11 +35,9 @@ class ClubDataProvider {
 
   Future<Club> getClub(String clubId) async {
     Club club;
-    final url = 'http://192.168.137.1:8080/v1/club';
+    final url = '$baseUrl/club';
     try {
-      final response = await httpClient.get(
-        url,
-      );
+      final response = await httpClient.get(Uri.parse(url));
       if (response.statusCode == 500) {
         throw HttpException('Error Occurred');
       } else if (response.statusCode == 404) {
@@ -57,10 +55,10 @@ class ClubDataProvider {
 
   Future<Club> postClub(Club club) async {
     Club cl;
-    final url = 'http://192.168.137.1:8080/v1/club';
+    final url = '$baseUrl/club';
     try {
       final response = await httpClient.post(
-        url,
+        Uri.parse(url),
         body: json.encode({
           'id': club.id,
           'club_name': club.name,
@@ -81,10 +79,10 @@ class ClubDataProvider {
 
   Future<Club> putClub(Club club) async {
     Club cl;
-    final url = 'http://192.168.137.1:8080/v1/club/${club.id}';
+    final url = '$baseUrl/club/${club.id}';
     try {
       final response = await httpClient.put(
-        url,
+        Uri.parse(url),
         body: json.encode({
           'id': club.id,
           'club_name': club.name,
@@ -104,11 +102,9 @@ class ClubDataProvider {
   }
 
   Future<void> deleteClub(String id) async {
-    final url = 'http://192.168.137.1:8080/v1/club/$id';
+    final url = '$baseUrl/club/$id';
     try {
-      final response = await httpClient.delete(
-        url,
-      );
+      final response = await httpClient.delete(Uri.parse(url));
       if (response.statusCode == 500) {
         throw HttpException('Error Occurred');
       } else if (response.statusCode == 404) {

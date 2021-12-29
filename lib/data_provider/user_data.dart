@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:io';
+import 'package:soccer_app/shared/constants.dart';
+
 import '../models/http_exception.dart';
 import '../models/user.dart';
 import '../util/util.dart';
@@ -14,12 +16,12 @@ class UserDataProvider {
 
   Util util = new Util();
   Future<List<User>> getUsers() async {
-    final url = 'http://192.168.137.1:8080/v1/admin/users';
+    final url = '$baseUrl/admin/users';
     List<User> users;
     try {
       String token = await util.getUserToken();
       String expiry = await util.getExpiryTime();
-      final response = await httpClient.get(url, headers: {
+      final response = await httpClient.get(Uri.parse(url), headers: {
         HttpHeaders.contentTypeHeader: "application/json",
         HttpHeaders.authorizationHeader: "Bearer $token",
         'expiry': expiry
@@ -42,10 +44,10 @@ class UserDataProvider {
 
   Future<User> login(User user) async {
     User user1;
-    final urlLogin = 'http://192.168.137.1:8080/v1/user/login';
+    final urlLogin = '$baseUrl/user/login';
     try {
       final response = await http.post(
-        urlLogin,
+        Uri.parse(urlLogin),
         body: json.encode({
           'id': user.id,
           'email': user.email,
@@ -78,20 +80,20 @@ class UserDataProvider {
   }
 
   Future<User> signUp(User user) async {
-    final urlEmailCheck = 'http://192.168.137.1:8080/v1/user/email/${user.email}';
-    final urlPhoneCheck = 'http://192.168.137.1:8080/v1/user/phone/${user.phone}';
-    final urlPostUser = 'http://192.168.137.1:8080/v1/user/signup';
+    final urlEmailCheck = '$baseUrl/user/email/${user.email}';
+    final urlPhoneCheck = '$baseUrl/user/phone/${user.phone}';
+    final urlPostUser = '$baseUrl/user/signup';
     User user1;
     try {
       var response = await httpClient.get(
-        urlEmailCheck,
+        Uri.parse(urlEmailCheck),
       );
       if (response.statusCode == 200) {
         final isEmailExist = json.decode(response.body) as bool;
         if (isEmailExist) {
           throw HttpException('Email already exists!');
         } else {
-          response = await httpClient.get(urlPhoneCheck);
+          response = await httpClient.get(Uri.parse(urlPhoneCheck));
 
           if (response.statusCode == 500) {
             throw HttpException('Error occurred !');
@@ -101,7 +103,7 @@ class UserDataProvider {
               throw HttpException('Phone No already exists!');
             } else {
               response = await httpClient.post(
-                urlPostUser,
+                Uri.parse(urlPostUser),
                 body: json.encode({
                   'id': user.id,
                   'email': user.email,
@@ -145,7 +147,7 @@ class UserDataProvider {
       String token = await util.getUserToken();
       String expiry = await util.getExpiryTime();
       final response = await httpClient.put(
-        url,
+        Uri.parse(url),
         headers: {
           HttpHeaders.contentTypeHeader: "application/json",
           HttpHeaders.authorizationHeader: "Bearer $token",
@@ -175,13 +177,13 @@ class UserDataProvider {
 
   Future<User> updateUserPassword(User user, String oldPassword) async {
     User updated;
-    final url = 'http://192.168.137.1:8080/v1/user/users/${user.id}';
-    final urlCheckPassword = 'http://192.168.137.1:8080/v1/user/password/${user.id}';
+    final url = '$baseUrl/user/users/${user.id}';
+    final urlCheckPassword = '$baseUrl/user/password/${user.id}';
     try {
       String token = await util.getUserToken();
       String expiry = await util.getExpiryTime();
       final response = await httpClient.post(
-        urlCheckPassword,
+        Uri.parse(urlCheckPassword),
         headers: {
           HttpHeaders.contentTypeHeader: "application/json",
           HttpHeaders.authorizationHeader: "Bearer $token",
@@ -198,7 +200,7 @@ class UserDataProvider {
       );
       if (response.statusCode == 200) {
         final response2 = await httpClient.put(
-          url,
+          Uri.parse(url),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
             HttpHeaders.authorizationHeader: "Bearer $token",

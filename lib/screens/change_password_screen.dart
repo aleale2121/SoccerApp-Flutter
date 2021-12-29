@@ -56,7 +56,6 @@ class PasswordChangeScreenState extends State<PasswordChangeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text("Edit Account"),
@@ -75,12 +74,18 @@ class PasswordChangeScreenState extends State<PasswordChangeScreen> {
             return Center(child: CircularProgressIndicator());
           }
           if (state is UserUpdatingErrorState) {
-            _scaffoldKey.currentState.showSnackBar(
-                SnackBar(content: Text('Error changing password')));
+             ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Error changing password'),
+              ),
+            );
           }
           if (state is UserIncorrectOldPasswordState) {
-            _scaffoldKey.currentState.showSnackBar(
-                SnackBar(content: Text('Your old password is incorrect')));
+             ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Your old password is incorrect'),
+              ),
+            );
           }
           if (state is UserUpdatedState) {
             BlocProvider.of<AuthBloc>(context).add(LogOutEvent());

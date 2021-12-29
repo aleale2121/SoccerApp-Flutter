@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/fixture/fixture.dart';
 import '../widgets/fixture_comp_admin.dart';
 import 'splash_screen.dart';
-import 'package:meta/meta.dart';
 
 class AdminFixturesScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -15,26 +14,28 @@ class AdminFixturesScreen extends StatelessWidget {
     return BlocConsumer<FixturesBloc, FixtureStates>(
       listener: (_, state) {
         if (state is FixtureDeletingState) {
-          scaffoldKey.currentState.removeCurrentSnackBar();
-          scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text('Deleting fixture.....'),
-          ));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Deleting fixture ......'),
+            ),
+          );
           SnackBar(
               content: Text('Deleting fixture.....'),
               duration: Duration(minutes: 2));
         }
         if (state is FixtureDeletedState) {
-          scaffoldKey.currentState.removeCurrentSnackBar();
-          BlocProvider.of<FixturesBloc>(context, listen: false)
-              .add(GetFixturesEvent());
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error Adding the result'),
+            ),
+          );
         }
         if (state is FixturesDeletingErrorState) {
-          scaffoldKey.currentState.removeCurrentSnackBar();
-          scaffoldKey.currentState.showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
               content: Text('Fixture Deleted'),
-              duration: Duration(
-                seconds: 5,
-              )));
+            ),
+          );
         }
       },
       builder: (_, state) {

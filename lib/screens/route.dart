@@ -5,7 +5,6 @@ import 'package:soccer_app/screens/admin_users_screen.dart';
 import 'package:soccer_app/screens/change_password_screen.dart';
 import 'package:soccer_app/screens/change_username_screen.dart';
 import 'package:soccer_app/screens/user_delete_account.dart';
-import 'package:soccer_app/util/util.dart';
 import '../models/model.dart';
 import '../blocs/auth/auth.dart';
 import 'detailScreens/admin_fixture_detail_screen.dart';
@@ -185,4 +184,3 @@ class ResultRoutArgsForDetail {
   final Result result;
   ResultRoutArgsForDetail({this.result});
 }
-

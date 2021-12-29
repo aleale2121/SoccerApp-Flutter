@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:soccer_app/models/model.dart';
 import 'package:soccer_app/screens/admin_add_role_screen.dart';
-import 'package:soccer_app/screens/route.dart';
 import 'package:soccer_app/widgets/role_comp_admin.dart';
 import '../blocs/Role/role.dart';
 
@@ -10,9 +8,6 @@ import 'splash_screen.dart';
 
 class AdminRoleScreen extends StatelessWidget {
   static const String routeName = "admin_Role";
-  // final GlobalKey<ScaffoldState> scaffoldKey;
-
-  // AdminRoleScreen({@required this.scaffoldKey});
 
   @override
   Widget build(BuildContext context) {

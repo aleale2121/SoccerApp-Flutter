@@ -5,7 +5,6 @@ import 'package:soccer_app/screens/change_username_screen.dart';
 import 'package:soccer_app/screens/user_delete_account.dart';
 import 'package:soccer_app/util/util.dart';
 import 'package:soccer_app/widgets/app_drawer_user.dart';
-import '../widgets/app_drawer_admin.dart';
 import 'user_fixtures_screen.dart';
 import 'user_results_screen.dart';
 

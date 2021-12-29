@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import '../blocs/result/result.dart';
 import '../models/model.dart';
 import '../blocs/club/club.dart';
@@ -90,7 +91,6 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
       onWillPop: _willPopPressed,
       child: Scaffold(
         key: _scaffoldKey,
-        resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: widget.fixtureArgs.edit
@@ -112,12 +112,20 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
               return Center(child: CircularProgressIndicator());
             }
             if (state is FixturePostingErrorState) {
-              _scaffoldKey.currentState.showSnackBar(
-                  SnackBar(content: Text('Error Adding the fixture')));
+              // _scaffoldKey.currentState.showSnackBar(
+              //     SnackBar(content: Text('Error Adding the fixture')));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Error Adding the fixture'),
+                ),
+              );
             }
             if (state is FixtureUpdatingErrorState) {
-              _scaffoldKey.currentState.showSnackBar(
-                  SnackBar(content: Text('Error Updating the fixture')));
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Error updating the fixture'),
+                ),
+              );
             }
             if ((state is FixturePostedState) ||
                 (state is FixtureUpdatedState)) {
