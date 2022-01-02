@@ -9,31 +9,31 @@ class AutoLoginState extends AuthStates {}
 
 class AutoLoginSuccessState extends AuthStates {
   final User user;
-  AutoLoginSuccessState({@required this.user});
+  AutoLoginSuccessState({required this.user});
 }
 
 class AutoLoginFailedState extends AuthStates {
   final String message;
-  AutoLoginFailedState({this.message});
+  AutoLoginFailedState({required this.message});
 }
 
 class LoggingState extends AuthStates {}
 
 class LoginSuccessState extends AuthStates {
   final User user;
-  LoginSuccessState({@required this.user});
+  LoginSuccessState({required this.user});
 }
 
 class LoginFailedState extends AuthStates {
   final String message;
-  LoginFailedState({this.message});
+  LoginFailedState({required this.message});
 }
 
 class SigningUpState extends AuthStates {}
 
 class SignUpSuccessState extends AuthStates {
   final User user;
-  SignUpSuccessState({@required this.user});
+  SignUpSuccessState({required this.user});
 }
 
 class EmailAlreadyExistState extends AuthStates {}
@@ -46,7 +46,7 @@ class InvalidInputState extends AuthStates {}
 
 class SignUpFailedState extends AuthStates {
   final String message;
-  SignUpFailedState({this.message});
+  SignUpFailedState({required this.message});
 }
 
 class LoggingOutState extends AuthStates {}

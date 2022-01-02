@@ -33,7 +33,7 @@ class AppRoutes {
                 if (state is AutoLoginState) {
                   return SplashScreen(title: 'Authenticating');
                 } else if (state is AutoLoginSuccessState) {
-                  isAdmin = state.user.role.name.toUpperCase() == 'ADMIN';
+                  isAdmin = state.user.role!.name.toUpperCase() == 'ADMIN';
                   isAuthenticated = true;
                 } else if (state is AutoLoginFailedState) {
                   isAuthenticated = false;
@@ -48,7 +48,7 @@ class AppRoutes {
                       title: Text('An Error Occurred!'),
                       content: Text('Failed to log out'),
                       actions: <Widget>[
-                        FlatButton(
+                        TextButton(
                           child: Text('Okay'),
                           onPressed: () {
                             Navigator.of(ctx).pop();
@@ -75,14 +75,14 @@ class AppRoutes {
     }
 
     if (settings.name == FixtureAddUpdate.routeName) {
-      FixtureRoutArgs fixtureRoutArgs = settings.arguments;
+      FixtureRoutArgs fixtureRoutArgs = settings.arguments as FixtureRoutArgs;
       return MaterialPageRoute(
           builder: (context) => FixtureAddUpdate(
                 fixtureArgs: fixtureRoutArgs,
               ));
     }
     if (settings.name == ResultAddUpdate.routeName) {
-      ResultRoutArgs resultRoutArgs = settings.arguments;
+      ResultRoutArgs resultRoutArgs = settings.arguments as ResultRoutArgs;
       return MaterialPageRoute(
           builder: (context) => ResultAddUpdate(
                 resultArgs: resultRoutArgs,
@@ -98,14 +98,14 @@ class AppRoutes {
       return MaterialPageRoute(builder: (context) => AdminUsersScreen());
     }
     if (settings.name == AdminEditUserRole.routeName) {
-      User user = settings.arguments;
+      User user = settings.arguments as User;
       return MaterialPageRoute(
           builder: (context) => AdminEditUserRole(
                 user: user,
               ));
     }
     if (settings.name == PasswordChangeScreen.routeName) {
-      User user = settings.arguments;
+      User user = settings.arguments as User;
       print('password change');
       print(user.fullName.toString());
       return MaterialPageRoute(
@@ -114,7 +114,7 @@ class AppRoutes {
               ));
     }
     if (settings.name == UsernameChangeScreen.routeName) {
-      User user = settings.arguments;
+      User user = settings.arguments as User;
       print('username change');
       return MaterialPageRoute(
           builder: (context) => UsernameChangeScreen(
@@ -128,59 +128,71 @@ class AppRoutes {
     }
 
     if (settings.name == AdminFixtureDetail.routeName) {
-      FixtureRoutArgsForDetail fixture = settings.arguments;
+      FixtureRoutArgsForDetail fixture =
+          settings.arguments as FixtureRoutArgsForDetail;
       return MaterialPageRoute(
           builder: (context) => AdminFixtureDetail(
-            fixture: fixture,
-          ));
+                fixture: fixture,
+              ));
     }
 
     if (settings.name == AdminResultDetail.routeName) {
-      ResultRoutArgsForDetail result = settings.arguments;
+      ResultRoutArgsForDetail result =
+          settings.arguments as ResultRoutArgsForDetail;
       return MaterialPageRoute(
           builder: (context) => AdminResultDetail(
-            result: result,
-          ));
+                result: result,
+              ));
     }
 
     if (settings.name == UserFixtureDetail.routeName) {
-      FixtureRoutArgsForDetail fixture = settings.arguments;
+      FixtureRoutArgsForDetail fixture =
+          settings.arguments as FixtureRoutArgsForDetail;
       return MaterialPageRoute(
           builder: (context) => UserFixtureDetail(
-            fixture: fixture,
-          ));
+                fixture: fixture,
+              ));
     }
     if (settings.name == UserResultDetail.routeName) {
-      ResultRoutArgsForDetail result = settings.arguments;
+      ResultRoutArgsForDetail result =
+          settings.arguments as ResultRoutArgsForDetail;
       return MaterialPageRoute(
           builder: (context) => UserResultDetail(
-            result: result,
-          ));
+                result: result,
+              ));
     }
     return MaterialPageRoute(builder: (context) => UserHome());
   }
 }
 
 class FixtureRoutArgs {
-  final Fixture fixture;
+   Fixture? fixture;
   final bool edit;
 
-  FixtureRoutArgs({this.fixture, this.edit});
+  FixtureRoutArgs({
+     this.fixture,
+    required this.edit,
+  });
 }
 
 class ResultRoutArgs {
-  final Result result;
-  final Fixture fixture;
+  final Result? result;
+  final Fixture? fixture;
   final bool edit;
 
-  ResultRoutArgs({this.result, this.fixture, this.edit});
+  ResultRoutArgs({
+     this.result,
+     this.fixture,
+    required this.edit,
+  });
 }
+
 class FixtureRoutArgsForDetail {
   final Fixture fixture;
-  FixtureRoutArgsForDetail({this.fixture});
+  FixtureRoutArgsForDetail({required this.fixture});
 }
 
 class ResultRoutArgsForDetail {
   final Result result;
-  ResultRoutArgsForDetail({this.result});
+  ResultRoutArgsForDetail({required this.result});
 }

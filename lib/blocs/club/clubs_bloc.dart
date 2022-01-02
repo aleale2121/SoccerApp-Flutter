@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
 import '../../models/club.dart';
 import '../../models/http_exception.dart';
 import '../../repository/club_repository.dart';
@@ -10,9 +9,9 @@ import 'clubs_state.dart';
 class ClubsBloc extends Bloc<ClubEvents, ClubStates> {
   final ClubRepository clubsRepository;
 
-  ClubsBloc({@required this.clubsRepository}) : super(ClubUninitializedState());
+  ClubsBloc({required this.clubsRepository}) : super(ClubUninitializedState());
 
-  @override
+
   Stream<ClubStates> mapEventToState(ClubEvents event) async* {
     if (event is GetClubsEvent) {
       yield* _mapGetClubsEventToState();
@@ -37,7 +36,7 @@ class ClubsBloc extends Bloc<ClubEvents, ClubStates> {
     } on HttpException catch (e) {
       yield ClubsFetchingErrorState(message: e.message);
     } catch (e) {
-      yield ClubsFetchingErrorState();
+      yield ClubsFetchingErrorState(message: "fetching");
     }
   }
 
@@ -49,7 +48,7 @@ class ClubsBloc extends Bloc<ClubEvents, ClubStates> {
     } on HttpException catch (e) {
       yield ClubPostingErrorState(message: e.message);
     } catch (e) {
-      yield ClubPostingErrorState();
+      yield ClubPostingErrorState(message: "");
     }
   }
 
@@ -61,7 +60,7 @@ class ClubsBloc extends Bloc<ClubEvents, ClubStates> {
     } on HttpException catch (e) {
       yield ClubUpdatingErrorState(message: e.message);
     } catch (e) {
-      yield ClubUpdatingErrorState();
+      yield ClubUpdatingErrorState(message: "");
     }
   }
 
@@ -73,7 +72,7 @@ class ClubsBloc extends Bloc<ClubEvents, ClubStates> {
     } on HttpException catch (e) {
       yield ClubsDeletingErrorState(message: e.message);
     } catch (e) {
-      yield ClubsDeletingErrorState();
+      yield ClubsDeletingErrorState(message: "");
     }
   }
 }

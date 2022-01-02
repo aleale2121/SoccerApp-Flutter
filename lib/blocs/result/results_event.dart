@@ -12,21 +12,21 @@ class GetResultsEvent extends ResultsEvent {
 
 class PostResultEvent extends ResultsEvent {
   final Result result;
-  PostResultEvent({@required this.result});
+  PostResultEvent({required this.result});
   @override
   List<Object> get props => [];
 }
 
 class UpdateResultEvent extends ResultsEvent {
   final Result result;
-  UpdateResultEvent({@required this.result});
+  UpdateResultEvent({required this.result});
   @override
   List<Object> get props => [];
 }
 
 class DeleteResultEvent extends ResultsEvent {
   final String resultId;
-  DeleteResultEvent({@required this.resultId});
+  DeleteResultEvent({required this.resultId});
 
   @override
   List<Object> get props => [];

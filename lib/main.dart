@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'blocs/Role/role.dart';
-import 'blocs/user/user.dart';
-import 'repository/role_repository.dart';
-import 'data_provider/data.dart';
-import 'repository/repository.dart';
-import 'blocs/auth/auth.dart';
-import 'blocs/fixture/fixture.dart';
-import 'blocs/result/result.dart';
-import 'blocs/club/club.dart';
-import 'screens/route.dart';
-import 'util/util.dart';
 import 'package:http/http.dart' as http;
 
+import 'blocs/Role/role.dart';
+import 'blocs/auth/auth.dart';
+import 'blocs/club/club.dart';
+import 'blocs/fixture/fixture.dart';
+import 'blocs/result/result.dart';
+import 'blocs/user/user.dart';
+import 'data_provider/data.dart';
+import 'repository/repository.dart';
+import 'repository/role_repository.dart';
+import 'screens/route.dart';
+import 'util/util.dart';
 void main() {
 
   final UserRepository userRepository = UserRepository(
@@ -41,18 +41,16 @@ class SoccerApp extends StatelessWidget {
   final FixtureRepository fixtureRepository;
   final ResultRepository resultRepository;
   final RoleRepository roleRepository;
+  const SoccerApp({
+    Key? key,
+    required this.userRepository,
+    required this.clubRepository,
+    required this.fixtureRepository,
+    required this.resultRepository,
+    required this.roleRepository,
+  }) : super(key: key);
 
-  SoccerApp({
-    @required this.roleRepository,
-    @required this.userRepository,
-    @required this.clubRepository,
-    @required this.fixtureRepository,
-    @required this.resultRepository,
-  }) : assert(userRepository != null &&
-            clubRepository != null &&
-            fixtureRepository != null &&
-            resultRepository != null &&
-            roleRepository != null);
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +74,9 @@ class SoccerApp extends StatelessWidget {
         providers: [
           BlocProvider<AuthBloc>(
             create: (_) =>
-                AuthBloc(userRepository: this.userRepository, util: Util())
+                AuthBloc(
+                  userRepository: this.userRepository, util: Util()
+                )
                   ..add(AutoLoginEvent()),
           ),
           BlocProvider<ClubsBloc>(

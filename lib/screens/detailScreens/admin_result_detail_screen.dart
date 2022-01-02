@@ -5,7 +5,7 @@ class AdminResultDetail extends StatelessWidget {
   static const routeName = 'admin_result_detail';
   final ResultRoutArgsForDetail result;
 
-  AdminResultDetail({@required this.result});
+  AdminResultDetail({required this.result});
 
   @override
   Widget build(BuildContext context) {

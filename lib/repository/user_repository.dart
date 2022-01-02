@@ -1,11 +1,12 @@
-import 'package:meta/meta.dart';
+import 'package:soccer_app/models/login_request.dart';
+
 import '../data_provider/data.dart';
 import '../models/model.dart';
 
 class UserRepository {
   final UserDataProvider userDataProvider;
 
-  UserRepository({@required this.userDataProvider})
+  UserRepository({required this.userDataProvider})
       : assert(userDataProvider != null);
 
   Future<List<User>> getUsers() async {
@@ -20,7 +21,7 @@ class UserRepository {
     return await userDataProvider.updateUserPassword(user, oldPassword);
   }
 
-  Future<User> login(User user) async {
+  Future<User> login(LoginRequestModel user) async {
     return await userDataProvider.login(user);
   }
 

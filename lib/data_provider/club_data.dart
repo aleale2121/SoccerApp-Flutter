@@ -1,18 +1,20 @@
-import 'dart:convert';
 import 'dart:async';
-import 'package:meta/meta.dart';
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
 import 'package:soccer_app/models/club.dart';
 import 'package:soccer_app/shared/constants.dart';
 
 import '../models/http_exception.dart';
-import 'package:http/http.dart' as http;
 
 class ClubDataProvider {
   final http.Client httpClient;
 
-  ClubDataProvider({@required this.httpClient}) : assert(httpClient != null);
-
   List<Club> clubs = [];
+  ClubDataProvider({
+    required this.httpClient,
+  });
   Future<List<Club>> getAndSetClubs() async {
     final url = '$baseUrl/club';
     try {
@@ -21,7 +23,7 @@ class ClubDataProvider {
       if (response.statusCode == 200) {
         final extractedData = json.decode(response.body) as List<dynamic>;
         if (extractedData == null) {
-          return null;
+          return [];
         }
         clubs = extractedData.map<Club>((json) => Club.fromJson(json)).toList();
       } else {
@@ -45,7 +47,7 @@ class ClubDataProvider {
       } else {
         final extractedData =
             json.decode(response.body) as Map<String, dynamic>;
-        club = Club.fromJson(extractedData);
+        club = Club.fromMap(extractedData);
       }
     } catch (e) {
       throw e;
@@ -69,7 +71,7 @@ class ClubDataProvider {
       } else {
         final extractedData =
             json.decode(response.body) as Map<String, dynamic>;
-        cl = Club.fromJson(extractedData);
+        cl = Club.fromMap(extractedData);
       }
     } catch (e) {
       throw e;
@@ -93,7 +95,7 @@ class ClubDataProvider {
       } else {
         final extractedData =
             json.decode(response.body) as Map<String, dynamic>;
-        cl = Club.fromJson(extractedData);
+        cl = Club.fromMap(extractedData);
       }
     } catch (e) {
       throw e;

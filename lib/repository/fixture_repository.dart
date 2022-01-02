@@ -5,7 +5,7 @@ import '../models/model.dart';
 class FixtureRepository {
   final FixtureDataProvider fixtureDataProvider;
 
-  FixtureRepository({@required this.fixtureDataProvider});
+  FixtureRepository({required this.fixtureDataProvider});
 
   Future<List<Fixture>> getAndSetFixtures() async {
     return await fixtureDataProvider.getAndSetFixtures();

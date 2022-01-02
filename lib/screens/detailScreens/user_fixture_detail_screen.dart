@@ -5,7 +5,7 @@ class UserFixtureDetail extends StatelessWidget {
   static const routeName = 'user_detail_screen';
   final FixtureRoutArgsForDetail fixture;
 
-  UserFixtureDetail({@required this.fixture});
+  UserFixtureDetail({required this.fixture});
 
   @override
   Widget build(BuildContext context) {

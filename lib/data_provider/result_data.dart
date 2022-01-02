@@ -1,19 +1,23 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+
+import 'package:http/http.dart' as http;
+
 import 'package:soccer_app/shared/constants.dart';
 import 'package:soccer_app/util/util.dart';
+
 import '../models/http_exception.dart';
 import '../models/result.dart';
-import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 
 class ResultDataProvider {
   final http.Client httpClient;
 
-  ResultDataProvider({@required this.httpClient}) : assert(httpClient != null);
 
   List<Result> results = [];
+  ResultDataProvider({
+    required this.httpClient,
+  });
   Future<List<Result>> getAndSetResults() async {
     print('------------fetching result------');
 
@@ -26,7 +30,7 @@ class ResultDataProvider {
       if (response.statusCode == 200) {
         final extractedData = json.decode(response.body) as List<dynamic>;
         if (extractedData == null) {
-          return null;
+          return [];
         }
         results =
             extractedData.map<Result>((json) => Result.fromJson(json)).toList();
@@ -56,7 +60,7 @@ class ResultDataProvider {
       } else {
         final extractedData =
             json.decode(response.body) as Map<String, dynamic>;
-        result = Result.fromJson(extractedData);
+        result = Result.fromMap(extractedData);
       }
     } catch (e) {
       throw e;
@@ -85,7 +89,7 @@ class ResultDataProvider {
       if (response.statusCode == 200) {
         final extractedData =
         json.decode(response.body) as Map<String, dynamic>;
-        res = Result.fromJson(extractedData);
+        res = Result.fromMap(extractedData);
       } else {
         print('-----status code');
         print(response.statusCode);
@@ -123,7 +127,7 @@ class ResultDataProvider {
       } else {
         final extractedData =
             json.decode(response.body) as Map<String, dynamic>;
-        res = Result.fromJson(extractedData);
+        res = Result.fromMap(extractedData);
       }
     } catch (e) {
       throw e;

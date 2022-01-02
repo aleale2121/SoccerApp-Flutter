@@ -9,7 +9,7 @@ class RoleFetchingState extends RoleStates {}
 
 class RoleFetchedState extends RoleStates {
   final List<Role> roles;
-  RoleFetchedState({@required this.roles}):assert(roles!=null);
+  RoleFetchedState({required this.roles}):assert(roles!=null);
 
   @override
   List<Object> get props => [roles];
@@ -18,7 +18,7 @@ class RoleFetchedState extends RoleStates {
 }
 
 class RoleFetchingErrorState extends RoleStates {
-  final String message;
+  final String? message;
 
   RoleFetchingErrorState({this.message});
 }
@@ -28,7 +28,7 @@ class RoleDeletingState extends RoleStates {}
 class RoleDeletedState extends RoleStates {}
 
 class RoleDeletingErrorState extends RoleStates {
-  final String message;
+  final String? message;
 
   RoleDeletingErrorState({this.message});
 }
@@ -38,7 +38,7 @@ class RolePostingState extends RoleStates {}
 class RolePostedState extends RoleStates {}
 
 class RolePostingErrorState extends RoleStates {
-  final String message;
+  final String? message;
 
   RolePostingErrorState({this.message});
 }
@@ -48,7 +48,7 @@ class RoleUpdatingState extends RoleStates {}
 class RoleUpdatedState extends RoleStates {}
 
 class RoleUpdatingErrorState extends RoleStates {
-  final String message;
+  final String? message;
   RoleUpdatingErrorState({this.message});
 }
 

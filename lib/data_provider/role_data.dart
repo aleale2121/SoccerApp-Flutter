@@ -1,20 +1,23 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+
+import 'package:http/http.dart' as http;
+
 import 'package:soccer_app/shared/constants.dart';
 
 import '../models/http_exception.dart';
 import '../models/user.dart';
 import '../util/util.dart';
-import 'package:meta/meta.dart';
-import 'package:http/http.dart' as http;
 
 class RoleDataProvider {
   final http.Client httpClient;
 
-  RoleDataProvider({@required this.httpClient}) : assert(httpClient != null);
 
   List<Role> roles = [];
+  RoleDataProvider({
+    required this.httpClient,
+  });
   Util util = new Util();
 
   Future<List<Role>> getAndSetRoles() async {
@@ -31,7 +34,7 @@ class RoleDataProvider {
       if (response.statusCode == 200) {
         final extractedData = json.decode(response.body) as List<dynamic>;
         if (extractedData == null) {
-          return null;
+          return [];
         }
         roles = extractedData.map<Role>((json) => Role.fromJson(json)).toList();
         print(roles);
@@ -66,7 +69,7 @@ class RoleDataProvider {
       if (response.statusCode == 200) {
         final extractedData =
             json.decode(response.body) as Map<String, dynamic>;
-        _role = Role.fromJson(extractedData);
+        _role = Role.fromMap(extractedData);
       } else {
         throw HttpException('Error Occurred');
       }
@@ -90,7 +93,7 @@ class RoleDataProvider {
       } else {
         final extractedData =
             json.decode(response.body) as Map<String, dynamic>;
-        role = Role.fromJson(extractedData);
+        role = Role.fromMap(extractedData);
         print(role);
       }
     } catch (e) {
@@ -115,7 +118,7 @@ class RoleDataProvider {
       } else {
         final extractedData =
             json.decode(response.body) as Map<String, dynamic>;
-        cl = Role.fromJson(extractedData);
+        cl = Role.fromMap(extractedData);
       }
     } catch (e) {
       throw e;

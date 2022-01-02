@@ -9,7 +9,7 @@ RandomColor _randomColor = RandomColor();
 class ResultComponent extends StatelessWidget {
   final Result result;
 
-  ResultComponent({@required this.result});
+  ResultComponent({required this.result});
   @override
   Widget build(BuildContext context) {
     return InkWell(

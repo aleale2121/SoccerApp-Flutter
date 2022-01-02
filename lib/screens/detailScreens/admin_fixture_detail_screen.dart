@@ -6,7 +6,7 @@ class AdminFixtureDetail extends StatelessWidget {
   static const routeName = 'courseDetail';
   final FixtureRoutArgsForDetail fixture;
 
-  AdminFixtureDetail({@required this.fixture});
+  AdminFixtureDetail({required this.fixture});
 
   @override
   Widget build(BuildContext context) {

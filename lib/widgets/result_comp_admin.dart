@@ -13,7 +13,7 @@ class ResultComponentAdmin extends StatelessWidget {
   final Result result;
 
   ResultComponentAdmin({
-    @required this.result,
+    required this.result,
   });
   @override
   Widget build(BuildContext context) {

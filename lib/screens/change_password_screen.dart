@@ -8,7 +8,7 @@ import '../blocs/user/user.dart';
 class PasswordChangeScreen extends StatefulWidget {
   static const routeName = "password_change_screen";
   final User user;
-  PasswordChangeScreen({@required this.user});
+  PasswordChangeScreen({required this.user});
   @override
   PasswordChangeScreenState createState() {
     return PasswordChangeScreenState();
@@ -39,12 +39,12 @@ class PasswordChangeScreenState extends State<PasswordChangeScreen> {
   Future<void> _saveForm() async {
     print(widget.user.fullName);
     print(widget.user.password);
-    final isValid = _formKey.currentState.validate();
+    final isValid = _formKey.currentState!.validate();
     if (!isValid) {
       return;
     }
     print('valid');
-    _formKey.currentState.save();
+    _formKey.currentState!.save();
     User userUpdated = widget.user;
     userUpdated.password = newPassword;
     BlocProvider.of<UserBloc>(context, listen: false)
@@ -70,18 +70,15 @@ class PasswordChangeScreenState extends State<PasswordChangeScreen> {
       ),
       body: BlocConsumer<UserBloc, UserStates>(
         listener: (_, state) {
-          if (state is UserUpdatingState) {
-            return Center(child: CircularProgressIndicator());
-          }
           if (state is UserUpdatingErrorState) {
-             ScaffoldMessenger.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Error changing password'),
               ),
             );
           }
           if (state is UserIncorrectOldPasswordState) {
-             ScaffoldMessenger.of(context).showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Your old password is incorrect'),
               ),
@@ -93,6 +90,9 @@ class PasswordChangeScreenState extends State<PasswordChangeScreen> {
           }
         },
         builder: (_, state) {
+          if (state is UserUpdatingState) {
+            return Center(child: CircularProgressIndicator());
+          }
           return Form(
             key: _formKey,
             child: SingleChildScrollView(
@@ -111,13 +111,15 @@ class PasswordChangeScreenState extends State<PasswordChangeScreen> {
                             .requestFocus(_oldPasswordFocusNode);
                       },
                       validator: (value) {
-                        if (value.length < 6) {
+                        if (value != null && value.length < 6) {
                           return 'incorrect password';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        oldPassword = value;
+                        if (value != null) {
+                          oldPassword = value;
+                        }
                       },
                       decoration: new InputDecoration(
                           border: OutlineInputBorder(),
@@ -141,13 +143,15 @@ class PasswordChangeScreenState extends State<PasswordChangeScreen> {
                             .requestFocus(_newPasswordFocusNode);
                       },
                       validator: (value) {
-                        if (value.isEmpty || value.length < 6) {
+                        if (value == null || value.length < 6) {
                           return 'invalid input';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        newPassword = value;
+                        if (value != null) {
+                          newPassword = value;
+                        }
                       },
                       onChanged: (value) {
                         newPassword = value;
@@ -174,7 +178,7 @@ class PasswordChangeScreenState extends State<PasswordChangeScreen> {
                             .requestFocus(_confirmedPassFocusNode);
                       },
                       validator: (value) {
-                        if (value.isEmpty || value.length < 6) {
+                        if (value == null || value.length < 6) {
                           return 'invalid input';
                         }
                         if (value != newPassword) {
@@ -183,7 +187,9 @@ class PasswordChangeScreenState extends State<PasswordChangeScreen> {
                         return null;
                       },
                       onSaved: (value) {
-                        confirmedPassword = value;
+                        if (value != null) {
+                          confirmedPassword = value;
+                        }
                       },
                       decoration: new InputDecoration(
                           border: OutlineInputBorder(),

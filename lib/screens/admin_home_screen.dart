@@ -16,7 +16,7 @@ class _AdminHomeState extends State<AdminHome>
     with SingleTickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  TabController controller;
+  late TabController controller;
   @override
   void initState() {
     super.initState();

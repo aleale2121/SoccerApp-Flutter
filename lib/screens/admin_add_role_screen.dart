@@ -27,26 +27,27 @@ class RoleAddState extends State<RoleAdd> {
   }
 
   final Map<String, dynamic> _roles = {};
+
+  late Role role;
+  String? name;
+  bool isInit = false;
   Future<void> _saveForm() async {
-    final isValid = _formKey.currentState.validate();
+    final isValid = _formKey.currentState!.validate();
     if (!isValid) {
       return;
     }
     if (name == null) {
       return;
     }
-    _formKey.currentState.save();
+    _formKey.currentState!.save();
 
     role = Role(
-      name: name,
+      name: name!,
     );
     BlocProvider.of<RoleBloc>(context, listen: false)
       ..add(PostRoleEvent(role: role));
   }
 
-  Role role = Role();
-  String name;
-  bool isInit = false;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -59,11 +60,8 @@ class RoleAddState extends State<RoleAdd> {
         ),
         body: BlocConsumer<RoleBloc, RoleStates>(
           listener: (_, state) {
-            if (state is RolePostingState) {
-              return Center(child: CircularProgressIndicator());
-            }
             if (state is RolePostingErrorState) {
-              _scaffoldKey.currentState.showSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Error Adding the Role')));
             }
             if (state is RolePostedState) {
@@ -72,6 +70,9 @@ class RoleAddState extends State<RoleAdd> {
             }
           },
           builder: (_, state) {
+            if (state is RolePostingState) {
+              return Center(child: CircularProgressIndicator());
+            }
             return Form(
               key: _formKey,
               child: Column(
@@ -79,7 +80,7 @@ class RoleAddState extends State<RoleAdd> {
                   TextFormField(
                       initialValue: '',
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value!.isEmpty) {
                           return 'Please enter Role Name';
                         }
                         return null;
@@ -95,7 +96,7 @@ class RoleAddState extends State<RoleAdd> {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         final form = _formKey.currentState;
-                        if (form.validate()) {
+                        if (form!.validate()) {
                           form.save();
                           role = Role(
                             name: _roles["name"],

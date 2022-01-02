@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
 import '../../models/fixture.dart';
 import '../../models/http_exception.dart';
 import '../../repository/fixture_repository.dart';
@@ -9,10 +8,10 @@ import 'fixtures_state.dart';
 
 class FixturesBloc extends Bloc<FixtureEvents, FixtureStates> {
   FixtureRepository fixturesRepository;
-  FixturesBloc({@required this.fixturesRepository})
+  FixturesBloc({required this.fixturesRepository})
       : super(FixtureUninitializedState());
 
-  @override
+  
   Stream<FixtureStates> mapEventToState(FixtureEvents event) async* {
     if (event is GetFixturesEvent) {
       yield* _mapGetFixturesEventToState();

@@ -12,7 +12,7 @@ class FixtureAddUpdate extends StatefulWidget {
   static const routeName = "admin_add_schedule";
   final FixtureRoutArgs fixtureArgs;
 
-  FixtureAddUpdate({this.fixtureArgs});
+  FixtureAddUpdate({required this.fixtureArgs});
 
   @override
   FixtureAddUpdateState createState() {
@@ -40,25 +40,23 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
   }
 
   Future<void> _saveForm() async {
-    final isValid = _formKey.currentState.validate();
+    final isValid = _formKey.currentState!.validate();
     if (!isValid) {
       return;
     }
-    if (firstClubName == null ||
-        secondClubName == null ||
-        arrivalTime.isEmpty) {
+    if (arrivalTime.isEmpty) {
       return;
     }
-    _formKey.currentState.save();
+    _formKey.currentState!.save();
 
     if (widget.fixtureArgs.edit) {
       fixture = Fixture(
-          id: widget.fixtureArgs.fixture.id,
+          id: widget.fixtureArgs.fixture!.id,
           stadiumName: stadiumName,
           stadiumLatitude: lat,
           stadiumLongitude: long,
           startingDate: startingTime,
-          clubs: [clubs[firstClubName], clubs[secondClubName]]);
+          clubs: [clubs[firstClubName]!, clubs[secondClubName]!]);
 
       BlocProvider.of<FixturesBloc>(context, listen: false)
         ..add(UpdateFixtureEvent(fixture: fixture));
@@ -68,22 +66,22 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
           stadiumLatitude: lat,
           stadiumLongitude: long,
           startingDate: startingTime,
-          clubs: [clubs[firstClubName], clubs[secondClubName]]);
+          clubs: [clubs[firstClubName]!, clubs[secondClubName]!]);
       BlocProvider.of<FixturesBloc>(context, listen: false)
         ..add(PostFixtureEvent(fixture: fixture));
     }
   }
 
-  String arrivalTime;
+  late String arrivalTime;
   Map<String, Club> clubs = {};
   List<String> clubNames = [];
-  Fixture fixture = Fixture();
-  String firstClubName;
-  String secondClubName;
-  String stadiumName;
-  double lat;
-  double long;
-  DateTime startingTime;
+  late Fixture fixture;
+  late String firstClubName;
+  late String secondClubName;
+  late String stadiumName;
+  late double lat;
+  late double long;
+  late DateTime startingTime;
   bool isInit = false;
   @override
   Widget build(BuildContext context) {
@@ -107,10 +105,6 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
         ),
         body: BlocConsumer<FixturesBloc, FixtureStates>(
           listener: (_, state) {
-            if ((state is FixturePostingState) ||
-                (state is FixtureUpdatingState)) {
-              return Center(child: CircularProgressIndicator());
-            }
             if (state is FixturePostingErrorState) {
               // _scaffoldKey.currentState.showSnackBar(
               //     SnackBar(content: Text('Error Adding the fixture')));
@@ -135,6 +129,10 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
             }
           },
           builder: (_, state) {
+            if ((state is FixturePostingState) ||
+                (state is FixtureUpdatingState)) {
+              return Center(child: CircularProgressIndicator());
+            }
             return Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -173,9 +171,9 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                                 secondClubName = clubNames[1];
                               } else {
                                 firstClubName =
-                                    widget.fixtureArgs.fixture.clubs[0].name;
+                                    widget.fixtureArgs.fixture!.clubs[0].name;
                                 secondClubName =
-                                    widget.fixtureArgs.fixture.clubs[1].name;
+                                    widget.fixtureArgs.fixture!.clubs[1].name;
                               }
                               isInit = true;
                             }
@@ -194,10 +192,10 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                                         autofocus: true,
                                         elevation: 15,
                                         value: firstClubName,
-                                        onChanged: (String newValue) {
+                                        onChanged: (String? newValue) {
                                           if (newValue != secondClubName) {
                                             setState(() {
-                                              firstClubName = newValue;
+                                              firstClubName = newValue!;
                                             });
                                           }
                                         },
@@ -218,10 +216,10 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                                     : DropdownButton<String>(
                                         autofocus: true,
                                         value: secondClubName,
-                                        onChanged: (String newValue) {
+                                        onChanged: (String? newValue) {
                                           if (newValue != firstClubName) {
                                             setState(() {
-                                              secondClubName = newValue;
+                                              secondClubName = newValue!;
                                             });
                                           }
                                         },
@@ -260,13 +258,13 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                           arrivalTime = val;
                         },
                         validator: (val) {
-                          if (val.isEmpty) {
+                          if (val!.isEmpty) {
                             return 'value cannot be empty';
                           }
                           return null;
                         },
                         onSaved: (val) {
-                          startingTime = getDateTimeValue(val);
+                          startingTime = getDateTimeValue(val!);
                         },
                       ),
                     ),
@@ -277,7 +275,7 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                       padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
                       child: TextFormField(
                         initialValue: widget.fixtureArgs.edit
-                            ? widget.fixtureArgs.fixture.stadiumName
+                            ? widget.fixtureArgs.fixture!.stadiumName
                             : '',
                         textAlign: TextAlign.left,
                         autofocus: false,
@@ -287,13 +285,13 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                               .requestFocus(_stadiumNameFocusNode);
                         },
                         validator: (value) {
-                          if (value.isEmpty || value.length < 4) {
+                          if (value==null || value.length < 4) {
                             return 'invalid input';
                           }
                           return null;
                         },
                         onSaved: (value) {
-                          stadiumName = value;
+                          stadiumName = value!;
                         },
                         decoration: new InputDecoration(
                             border: OutlineInputBorder(),
@@ -308,7 +306,7 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                       padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
                       child: TextFormField(
                         initialValue: widget.fixtureArgs.edit
-                            ? widget.fixtureArgs.fixture.stadiumLatitude
+                            ? widget.fixtureArgs.fixture!.stadiumLatitude
                                 .toString()
                             : '',
                         keyboardType: TextInputType.number,
@@ -320,13 +318,13 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                               .requestFocus(_latitudeFocusNode);
                         },
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value==null) {
                             return 'value cannot input';
                           }
                           return null;
                         },
                         onSaved: (value) {
-                          lat = double.parse(value);
+                          lat = double.parse(value!);
                         },
                         decoration: new InputDecoration(
                             border: OutlineInputBorder(),
@@ -341,7 +339,7 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                       padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
                       child: TextFormField(
                         initialValue: widget.fixtureArgs.edit
-                            ? widget.fixtureArgs.fixture.stadiumLongitude
+                            ? widget.fixtureArgs.fixture!.stadiumLongitude
                                 .toString()
                             : '',
                         keyboardType: TextInputType.number,
@@ -349,7 +347,7 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                         autofocus: false,
                         focusNode: _longitudeFocusNode,
                         validator: (value) {
-                          if (value.isEmpty) {
+                          if (value==null) {
                             return 'value cannot input';
                           }
                           return null;
@@ -359,7 +357,7 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                               .requestFocus(_longitudeFocusNode);
                         },
                         onSaved: (value) {
-                          long = double.parse(value);
+                          long = double.parse(value!);
                         },
                         decoration: new InputDecoration(
                             border: OutlineInputBorder(),

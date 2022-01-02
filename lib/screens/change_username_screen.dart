@@ -8,7 +8,7 @@ import '../blocs/user/user.dart';
 class UsernameChangeScreen extends StatefulWidget {
   static const routeName = "username_change_screen";
   final User user;
-  UsernameChangeScreen({this.user});
+  UsernameChangeScreen({required this.user});
   @override
   UsernameChangeScreenState createState() {
     return UsernameChangeScreenState();
@@ -38,11 +38,11 @@ class UsernameChangeScreenState extends State<UsernameChangeScreen> {
 
   Future<void> _saveForm() async {
     print(widget.user.toString());
-    final isValid = _formKey.currentState.validate();
+    final isValid = _formKey.currentState!.validate();
     if (!isValid) {
       return;
     }
-    _formKey.currentState.save();
+    _formKey.currentState!.save();
     User userUpdated = widget.user;
     userUpdated.email = newUsername;
 
@@ -68,11 +68,8 @@ class UsernameChangeScreenState extends State<UsernameChangeScreen> {
       ),
       body: BlocConsumer<UserBloc, UserStates>(
         listener: (_, state) {
-          if (state is UserUpdatingState) {
-            return Center(child: CircularProgressIndicator());
-          }
           if (state is UserUpdatingErrorState) {
-            _scaffoldKey.currentState.showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Error changing password')));
           }
           if (state is UserUpdatedState) {
@@ -81,6 +78,9 @@ class UsernameChangeScreenState extends State<UsernameChangeScreen> {
           }
         },
         builder: (_, state) {
+          if (state is UserUpdatingState) {
+            return Center(child: CircularProgressIndicator());
+          }
           return Form(
             key: _formKey,
             child: SingleChildScrollView(
@@ -104,7 +104,9 @@ class UsernameChangeScreenState extends State<UsernameChangeScreen> {
                         return null;
                       },
                       onSaved: (value) {
-                        oldUsername = value;
+                        if (value != null) {
+                          oldUsername = value;
+                        }
                       },
                       onChanged: (value) {
                         newUsername = value;
@@ -130,13 +132,15 @@ class UsernameChangeScreenState extends State<UsernameChangeScreen> {
                             .requestFocus(_newUsernameFocusNode);
                       },
                       validator: (value) {
-                        if (value.isEmpty || value.length < 6) {
+                        if (value==null || value.length < 6) {
                           return 'invalid input';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        newUsername = value;
+                        if (value!=null) {
+                          newUsername = value;
+                        }
                       },
                       onChanged: (value) {
                         newUsername = value;
@@ -165,7 +169,7 @@ class UsernameChangeScreenState extends State<UsernameChangeScreen> {
                         confirmedUsername = value;
                       },
                       validator: (value) {
-                        if (value.isEmpty || value.length < 6) {
+                        if (value==null || value.length < 6) {
                           return 'invalid input';
                         }
                         if (value != newUsername) {
@@ -176,7 +180,9 @@ class UsernameChangeScreenState extends State<UsernameChangeScreen> {
                         return null;
                       },
                       onSaved: (value) {
-                        confirmedUsername = value;
+                        if (value!=null) {
+                          confirmedUsername = value;
+                        }
                       },
                       decoration: new InputDecoration(
                         border: OutlineInputBorder(),

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
 import '../../models/result.dart';
 import '../../models/http_exception.dart';
 import '../../repository/result_repository.dart';
@@ -9,10 +8,10 @@ import 'results_state.dart';
 
 class ResultsBloc extends Bloc<ResultsEvent, ResultStates> {
   final ResultRepository resultRepository;
-  ResultsBloc({@required this.resultRepository})
+  ResultsBloc({required this.resultRepository})
       : super(ResultUninitializedState());
 
-  @override
+  
   Stream<ResultStates> mapEventToState(ResultsEvent event) async* {
     if (event is GetResultsEvent) {
       yield* _mapGetResultsEventToState();

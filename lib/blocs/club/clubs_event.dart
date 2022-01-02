@@ -12,21 +12,21 @@ class GetClubsEvent extends ClubEvents {
 
 class PostClubEvent extends ClubEvents {
   final Club club;
-  PostClubEvent({@required this.club});
+  PostClubEvent({required this.club});
   @override
   List<Object> get props => [];
 }
 
 class UpdateClubEvent extends ClubEvents {
   final Club club;
-  UpdateClubEvent({@required this.club});
+  UpdateClubEvent({required this.club});
   @override
   List<Object> get props => [];
 }
 
 class DeleteClubEvent extends ClubEvents {
   final String clubId;
-  DeleteClubEvent({@required this.clubId});
+  DeleteClubEvent({required this.clubId});
 
   @override
   List<Object> get props => [];

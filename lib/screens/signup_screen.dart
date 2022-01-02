@@ -17,10 +17,10 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-  String fullName;
-  String email;
-  String phone;
-  String password;
+  late String fullName;
+  late String email;
+  late String phone;
+  late String password;
   int roleId = 1;
 
   @override
@@ -142,10 +142,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         colour: Colors.lightBlueAccent,
                         onPressed: () {
                           final form = _formKey.currentState;
-                          if (!form.validate()) {
+                          if (!form!.validate()) {
                             return;
                           }
-                          User user = new User.fullInfo(
+                          User user = new User(
                             fullName: fullName,
                             email: email,
                             phone: phone,

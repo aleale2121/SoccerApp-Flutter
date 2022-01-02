@@ -9,7 +9,7 @@ class AdminEditUserRole extends StatefulWidget {
   static const routeName = "admin_edit_user_role";
   final User user;
 
-  AdminEditUserRole({@override this.user});
+  AdminEditUserRole({required this.user});
 
   @override
   AdminEditUserRoleState createState() {
@@ -27,13 +27,13 @@ class AdminEditUserRoleState extends State<AdminEditUserRole> {
 
   Future<void> _save() async {
     print(newRole);
-    if (newRole != widget.user.role.name) {
-      User userUpdated = new User.fullInfo(
+    if (newRole != widget.user.role!.name) {
+      User userUpdated = new User(
         id: widget.user.id,
         password: widget.user.password,
         email: widget.user.email,
         role: roles[newRole],
-        roleId: roles[newRole].id,
+        roleId: roles[newRole]!.id!,
         fullName: widget.user.fullName,
         phone: widget.user.phone,
       );
@@ -63,12 +63,8 @@ class AdminEditUserRoleState extends State<AdminEditUserRole> {
         ),
         body: BlocConsumer<UserBloc, UserStates>(
           listener: (context, state) {
-            if (state is UserUpdatingState) {
-              return Center(child: CircularProgressIndicator());
-            }
-
             if (state is UserUpdatingErrorState) {
-               ScaffoldMessenger.of(context).showSnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Error Editing the role'),
                 ),
@@ -80,6 +76,10 @@ class AdminEditUserRoleState extends State<AdminEditUserRole> {
             }
           },
           builder: (context, state) {
+            if (state is UserUpdatingState) {
+              return Center(child: CircularProgressIndicator());
+            }
+
             return Center(
               child: Column(
                 children: [
@@ -106,7 +106,7 @@ class AdminEditUserRoleState extends State<AdminEditUserRole> {
                         }
                         if (state is RoleFetchedState) {
                           if (isInit == false) {
-                            newRole = widget.user.role.name;
+                            newRole = widget.user.role!.name;
                             roleNames.clear();
                             state.roles.forEach((element) {
                               roles[element.name] = element;
@@ -125,9 +125,11 @@ class AdminEditUserRoleState extends State<AdminEditUserRole> {
                                     autofocus: true,
                                     elevation: 15,
                                     value: newRole,
-                                    onChanged: (String newValue) {
+                                    onChanged: (String? newValue) {
                                       setState(() {
-                                        newRole = newValue;
+                                        if (newValue != null) {
+                                          newRole = newValue;
+                                        }
                                       });
                                     },
                                     items: roleNames
@@ -161,7 +163,7 @@ class AdminEditUserRoleState extends State<AdminEditUserRole> {
                         SizedBox(
                           height: 5.0,
                         ),
-                        Text(widget.user.role.name),
+                        Text(widget.user.role!.name),
                       ],
                     ),
                   )

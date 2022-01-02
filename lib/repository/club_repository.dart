@@ -5,7 +5,7 @@ import '../models/model.dart';
 class ClubRepository {
   final ClubDataProvider clubDataProvider;
 
-  ClubRepository({@required this.clubDataProvider});
+  ClubRepository({required this.clubDataProvider});
 
   Future<List<Club>> getAndSetClubs() async {
     return await clubDataProvider.getAndSetClubs();

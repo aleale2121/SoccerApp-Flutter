@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
 import '../../repository/repository.dart';
 import '../../models/user.dart';
 import '../../models/http_exception.dart';
@@ -11,9 +10,9 @@ import 'user_events.dart';
 class UserBloc extends Bloc<UserEvents, UserStates> {
   final UserRepository userRepository;
 
-  UserBloc({@required this.userRepository}) : super(UserUninitializedState());
+  UserBloc({required this.userRepository}) : super(UserUninitializedState());
 
-  @override
+  
   Stream<UserStates> mapEventToState(UserEvents event) async* {
     if (event is GetUsersEvent) {
       yield* _mapGetUsersEventToState();

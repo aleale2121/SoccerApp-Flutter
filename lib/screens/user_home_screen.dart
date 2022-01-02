@@ -17,7 +17,7 @@ class UserHome extends StatefulWidget {
 
 class _UserHomeState extends State<UserHome>
     with SingleTickerProviderStateMixin {
-  TabController controller;
+  late TabController controller;
   @override
   void initState() {
     super.initState();

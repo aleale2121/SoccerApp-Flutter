@@ -12,21 +12,21 @@ class GetFixturesEvent extends FixtureEvents {
 
 class PostFixtureEvent extends FixtureEvents {
   final Fixture fixture;
-  PostFixtureEvent({@required this.fixture});
+  PostFixtureEvent({required this.fixture});
   @override
   List<Object> get props => [];
 }
 
 class UpdateFixtureEvent extends FixtureEvents {
   final Fixture fixture;
-  UpdateFixtureEvent({@required this.fixture});
+  UpdateFixtureEvent({required this.fixture});
   @override
   List<Object> get props => [];
 }
 
 class DeleteFixtureEvent extends FixtureEvents {
   final String fixtureId;
-  DeleteFixtureEvent({@required this.fixtureId});
+  DeleteFixtureEvent({required this.fixtureId});
 
   @override
   List<Object> get props => [];

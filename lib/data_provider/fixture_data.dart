@@ -1,19 +1,22 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+
+import 'package:http/http.dart' as http;
+import 'package:meta/meta.dart';
 
 import 'package:soccer_app/shared/constants.dart';
 
-import '../models/http_exception.dart';
 import '../models/fixture.dart';
-import 'package:http/http.dart' as http;
+import '../models/http_exception.dart';
 import '../util/util.dart';
-import 'package:meta/meta.dart';
 
 class FixtureDataProvider {
   final http.Client httpClient;
+  FixtureDataProvider({
+    required this.httpClient,
+  });
 
-  FixtureDataProvider({@required this.httpClient}) : assert(httpClient != null);
 
   Future<List<Fixture>> getAndSetFixtures() async {
     List<Fixture> fixtures = [];
@@ -24,7 +27,7 @@ class FixtureDataProvider {
       if (response.statusCode == 200) {
         final extractedData = json.decode(response.body) as List<dynamic>;
         if (extractedData == null) {
-          return null;
+          return [];
         }
         fixtures = extractedData
             .map<Fixture>((json) => Fixture.fromJson(json))
@@ -53,7 +56,7 @@ class FixtureDataProvider {
       } else {
         final extractedData =
             json.decode(response.body) as Map<String, dynamic>;
-        fixture = Fixture.fromJson(extractedData);
+        fixture = Fixture.fromMap(extractedData);
       }
     } catch (e) {
       throw e;
@@ -67,9 +70,9 @@ class FixtureDataProvider {
     Util util = new Util();
     String token = await util.getUserToken();
     try {
-      List<Map> clubs = fixture.clubs != null
-          ? fixture.clubs.map((club) => club.toJson()).toList()
-          : null;
+      // List<Map> clubs = fixture.clubs != null
+      //     ? fixture.clubs.map((club) => club.toJson()).toList()
+      //     : null;
       final response = await httpClient.post(
         Uri.parse(url),
         body: json.encode(
@@ -77,7 +80,7 @@ class FixtureDataProvider {
             'id': fixture.id,
             'starting_date':
                 fixture.startingDate.millisecondsSinceEpoch.toString(),
-            'clubs': clubs,
+            // 'clubs': clubs,
             'stadium_latitude': fixture.stadiumLatitude,
             'stadium_longitude': fixture.stadiumLongitude,
             'referee_name': fixture.stadiumName,
@@ -92,7 +95,7 @@ class FixtureDataProvider {
       if (response.statusCode == 200) {
         final extractedData =
             json.decode(response.body) as Map<String, dynamic>;
-        fxtr = Fixture.fromJson(extractedData);
+        fxtr = Fixture.fromMap(extractedData);
       } else {
         throw HttpException('Error Occurred');
       }
@@ -107,9 +110,9 @@ class FixtureDataProvider {
     final url = '$baseUrl/fixture/${fixture.id}';
     String token = await util.getUserToken();
     try {
-      List<Map> clubs = fixture.clubs != null
-          ? fixture.clubs.map((club) => club.toJson()).toList()
-          : null;
+      // List<Map> clubs = fixture.clubs != null
+      //     ? fixture.clubs.map((club) => club.toJson()).toList()
+      //     : null;
       final response = await httpClient.put(
         Uri.parse(url),
         body: json.encode(
@@ -117,7 +120,7 @@ class FixtureDataProvider {
             'id': fixture.id,
             'starting_date':
                 fixture.startingDate.millisecondsSinceEpoch.toString(),
-            'clubs': clubs,
+            // 'clubs': clubs,
             'stadium_latitude': fixture.stadiumLatitude,
             'stadium_longitude': fixture.stadiumLongitude,
             'referee_name': fixture.stadiumName,
@@ -134,7 +137,7 @@ class FixtureDataProvider {
       } else {
         final extractedData =
             json.decode(response.body) as Map<String, dynamic>;
-        fxtr = Fixture.fromJson(extractedData);
+        fxtr = Fixture.fromMap(extractedData);
       }
     } catch (e) {
       throw e;

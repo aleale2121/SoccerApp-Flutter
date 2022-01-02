@@ -1,11 +1,10 @@
-import 'package:meta/meta.dart';
 import '../data_provider/data.dart';
 import '../models/model.dart';
 
 class ResultRepository {
   final ResultDataProvider resultDataProvider;
 
-  ResultRepository({@required this.resultDataProvider});
+  ResultRepository({required this.resultDataProvider});
 
   Future<List<Result>> getAndSetResults() async {
     return await resultDataProvider.getAndSetResults();

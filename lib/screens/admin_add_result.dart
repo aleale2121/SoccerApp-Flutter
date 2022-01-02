@@ -8,7 +8,7 @@ import 'route.dart';
 class ResultAddUpdate extends StatefulWidget {
   static const routeName = "admin_add_result";
   final ResultRoutArgs resultArgs;
-  ResultAddUpdate({this.resultArgs});
+  ResultAddUpdate({required this.resultArgs});
   @override
   ResultAddUpdateState createState() {
     return ResultAddUpdateState();
@@ -24,14 +24,14 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
 
   int firstClubScore = 0;
   int secondClubScore = 0;
-  Result result = Result();
+  late Result result ;
   bool isInit = false;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (!isInit && widget.resultArgs.edit) {
-      firstClubScore = widget.resultArgs.result.firstClubScore;
-      secondClubScore = widget.resultArgs.result.secondClubScore;
+      firstClubScore = widget.resultArgs.result!.firstClubScore;
+      secondClubScore = widget.resultArgs.result!.secondClubScore;
       isInit = true;
     }
   }
@@ -45,20 +45,20 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
   }
 
   Future<void> _saveForm() async {
-    final isValid = _formKey.currentState.validate();
+    final isValid = _formKey.currentState!.validate();
     if (!isValid) {
       return;
     }
 
-    _formKey.currentState.save();
+    _formKey.currentState!.save();
 
     if (widget.resultArgs.edit) {
       result = Result(
-        id: widget.resultArgs.result.id,
+        id: widget.resultArgs.result!.id,
         firstClubScore: firstClubScore,
         secondClubScore: secondClubScore,
-        fixture: widget.resultArgs.result.fixture,
-        fixtureId: widget.resultArgs.result.fixture.id,
+        fixture: widget.resultArgs.result!.fixture,
+        fixtureId: widget.resultArgs.result!.fixture.id!,
       );
 
       BlocProvider.of<ResultsBloc>(context, listen: false)
@@ -67,8 +67,8 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
       result = Result(
         firstClubScore: firstClubScore,
         secondClubScore: secondClubScore,
-        fixture: widget.resultArgs.fixture,
-        fixtureId: widget.resultArgs.fixture.id,
+        fixture: widget.resultArgs.fixture!,
+        fixtureId: widget.resultArgs.fixture!.id!,
       );
 
       BlocProvider.of<ResultsBloc>(context, listen: false)
@@ -95,9 +95,6 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
       ),
       body: BlocConsumer<ResultsBloc, ResultStates>(
         listener: (_, state) {
-          if ((state is ResultPostingState) || (state is ResultUpdatingState)) {
-            return Center(child: CircularProgressIndicator());
-          }
           if (state is ResultPostingErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -116,6 +113,9 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
           }
         },
         builder: (_, state) {
+          if ((state is ResultPostingState) || (state is ResultUpdatingState)) {
+            return Center(child: CircularProgressIndicator());
+          }
           return Form(
             key: _formKey,
             child: SingleChildScrollView(
@@ -125,7 +125,7 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
                     padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
                     child: TextFormField(
                       initialValue: widget.resultArgs.edit
-                          ? widget.resultArgs.result.firstClubScore.toString()
+                          ? widget.resultArgs.result?.firstClubScore.toString()
                           : firstClubScore.toString(),
                       textAlign: TextAlign.left,
                       keyboardType: TextInputType.number,
@@ -136,19 +136,19 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
                             .requestFocus(_firstClubResultFocusNode);
                       },
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value!.isEmpty) {
                           return 'invalid input';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        firstClubScore = int.parse(value);
+                        firstClubScore = int.parse(value!);
                       },
                       decoration: new InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: widget.resultArgs.edit
-                              ? widget.resultArgs.result.fixture.clubs[0].name
-                              : widget.resultArgs.fixture.clubs[0].name,
+                              ? widget.resultArgs.result?.fixture.clubs[0].name
+                              : widget.resultArgs.fixture?.clubs[0].name,
                           hintText: 'Enter Score'),
                     ),
                   ),
@@ -159,7 +159,7 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
                     padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
                     child: TextFormField(
                       initialValue: widget.resultArgs.edit
-                          ? widget.resultArgs.result.secondClubScore.toString()
+                          ? widget.resultArgs.result?.secondClubScore.toString()
                           : secondClubScore.toString(),
                       keyboardType: TextInputType.number,
                       textAlign: TextAlign.left,
@@ -170,19 +170,19 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
                             .requestFocus(_secondClubResultFocusNode);
                       },
                       validator: (value) {
-                        if (value.isEmpty) {
+                        if (value!.isEmpty) {
                           return 'value cannot input';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        secondClubScore = int.parse(value);
+                        secondClubScore = int.parse(value!);
                       },
                       decoration: new InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: widget.resultArgs.edit
-                              ? widget.resultArgs.result.fixture.clubs[1].name
-                              : widget.resultArgs.fixture.clubs[1].name,
+                              ? widget.resultArgs.result?.fixture.clubs[1].name
+                              : widget.resultArgs.fixture?.clubs[1].name,
                           hintText: 'Enter Score'),
                     ),
                   ),

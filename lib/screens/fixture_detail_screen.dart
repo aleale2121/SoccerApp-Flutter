@@ -4,7 +4,7 @@ import '../models/model.dart';
 class FixtureComponent extends StatelessWidget {
   final Result result;
 
-  FixtureComponent({@required this.result});
+  FixtureComponent({required this.result});
   @override
   Widget build(BuildContext context) {
     return InkWell(

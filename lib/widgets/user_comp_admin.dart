@@ -7,7 +7,7 @@ import '../models/user.dart';
 class UserComponent extends StatelessWidget {
   final User user;
 
-  UserComponent({this.user});
+  UserComponent({required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class UserComponent extends StatelessWidget {
             ),
           ],
         ),
-        subtitle: Text(user.role.name),
+        subtitle: Text(user.role!.name),
         trailing: IconButton(
           icon: Icon(Icons.edit),
           onPressed: () {

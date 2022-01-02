@@ -7,7 +7,7 @@ import 'splash_screen.dart';
 class AdminFixturesScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  AdminFixturesScreen({@required this.scaffoldKey});
+  AdminFixturesScreen({required this.scaffoldKey});
 
   @override
   Widget build(BuildContext context) {

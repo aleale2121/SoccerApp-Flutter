@@ -17,7 +17,7 @@ class FixtureComponentAdmin extends StatelessWidget {
   final Fixture fixture;
 
   FixtureComponentAdmin({
-    @required this.fixture,
+    required this.fixture,
   });
   @override
   Widget build(BuildContext context) {

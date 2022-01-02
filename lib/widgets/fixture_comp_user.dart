@@ -10,7 +10,7 @@ RandomColor _randomColor = RandomColor();
 class FixtureComponent extends StatelessWidget {
   final Fixture fixture;
 
-  FixtureComponent({@required this.fixture});
+  FixtureComponent({required this.fixture});
   @override
   Widget build(BuildContext context) {
     return InkWell(

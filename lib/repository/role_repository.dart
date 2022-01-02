@@ -1,11 +1,10 @@
-import 'package:meta/meta.dart';
 import '../data_provider/data.dart';
 import '../models/model.dart';
 
 class RoleRepository {
   final RoleDataProvider roleDataProvider;
 
-  RoleRepository({@required this.roleDataProvider})
+  RoleRepository({required this.roleDataProvider})
       : assert(roleDataProvider != null);
 
   Future<List<Role>> getAndSetRoles() async {

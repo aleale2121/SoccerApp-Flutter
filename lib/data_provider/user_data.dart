@@ -1,18 +1,23 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+
+import 'package:http/http.dart' as http;
+import 'package:meta/meta.dart';
+import 'package:soccer_app/models/login_request.dart';
+
 import 'package:soccer_app/shared/constants.dart';
 
 import '../models/http_exception.dart';
 import '../models/user.dart';
 import '../util/util.dart';
-import 'package:meta/meta.dart';
-import 'package:http/http.dart' as http;
 
 class UserDataProvider {
   final http.Client httpClient;
+  UserDataProvider({
+    required this.httpClient,
+  });
 
-  UserDataProvider({@required this.httpClient}) : assert(httpClient != null);
 
   Util util = new Util();
   Future<List<User>> getUsers() async {
@@ -30,7 +35,7 @@ class UserDataProvider {
       if (response.statusCode == 200) {
         final extractedData = json.decode(response.body) as List<dynamic>;
         if (extractedData == null) {
-          return null;
+          return [];
         }
         users = extractedData.map<User>((json) => User.fromJson(json)).toList();
       } else {
@@ -42,20 +47,13 @@ class UserDataProvider {
     return users;
   }
 
-  Future<User> login(User user) async {
+  Future<User> login(LoginRequestModel user) async {
     User user1;
     final urlLogin = '$baseUrl/user/login';
     try {
       final response = await http.post(
         Uri.parse(urlLogin),
-        body: json.encode({
-          'id': user.id,
-          'email': user.email,
-          'full_name': user.email,
-          'phone': user.phone,
-          'password': user.password,
-          'role_id': user.roleId,
-        }),
+        body: user.toJson(),
       );
       print(response.statusCode);
       if (response.statusCode == 422) {
@@ -65,8 +63,8 @@ class UserDataProvider {
       } else {
         final extractedData =
             json.decode(response.body) as Map<String, dynamic>;
-        user1 = User.fromJson(extractedData);
-        print(user1.role.name);
+        user1 = User.fromMap(extractedData);
+        print(user1.role!.name);
         String token = response.headers['token'].toString();
         String expiry = response.headers['expiry_date'].toString();
 
@@ -120,7 +118,7 @@ class UserDataProvider {
               if (response.statusCode == 200) {
                 final extractedData =
                     json.decode(response.body) as Map<String, dynamic>;
-                user1 = User.fromJson(extractedData);
+                user1 = User.fromMap(extractedData);
                 String token = response.headers['Token'].toString();
                 String expiry = response.headers['Expiry_date'].toString();
                 await util.storeUserInformation(user1);
@@ -218,7 +216,7 @@ class UserDataProvider {
         if (response2.statusCode == 200) {
           final extractedData =
               json.decode(response2.body) as Map<String, dynamic>;
-          updated = User.fromJson(extractedData);
+          updated = User.fromMap(extractedData);
         } else {
           throw HttpException('Error Occurred');
         }

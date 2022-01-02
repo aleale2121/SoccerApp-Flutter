@@ -7,7 +7,7 @@ import '../models/user.dart';
 class RoleComponent extends StatelessWidget {
   final Role role;
 
-  RoleComponent({this.role});
+  RoleComponent({required this.role});
 
   @override
   Widget build(BuildContext context) {

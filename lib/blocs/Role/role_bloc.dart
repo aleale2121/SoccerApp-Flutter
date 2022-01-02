@@ -11,7 +11,7 @@ import 'role_state.dart';
 class RoleBloc extends Bloc<RoleEvents, RoleStates> {
   final RoleRepository roleRepository;
 
-  RoleBloc({@required this.roleRepository}) : super(RoleUninitializedState());
+  RoleBloc({required this.roleRepository}) : super(RoleUninitializedState());
 
   @override
   Stream<RoleStates> mapEventToState(RoleEvents event) async* {

@@ -7,7 +7,7 @@ import 'splash_screen.dart';
 class AdminResultsScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
 
-  AdminResultsScreen({@required this.scaffoldKey});
+  AdminResultsScreen({required this.scaffoldKey});
 
   @override
   Widget build(BuildContext context) {
