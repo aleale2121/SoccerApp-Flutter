@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/fixture/fixture.dart';
-import '../models/model.dart';
-import '../blocs/result/result.dart';
-import 'route.dart';
+import '../../blocs/fixture/fixture.dart';
+import '../../models/model.dart';
+import '../../blocs/result/result.dart';
+import '../../route/route.dart';
 
 class ResultAddUpdate extends StatefulWidget {
   static const routeName = "admin_add_result";

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/user/user.dart';
-import '../screens/admin_users_screen.dart';
+import '../screens/users_screen/admin_users_screen.dart';
 import '../blocs/auth/auth.dart';
 
 class AppDrawer extends StatelessWidget {

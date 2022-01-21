@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import '../blocs/result/result.dart';
-import '../models/model.dart';
-import '../blocs/club/club.dart';
-import '../blocs/fixture/fixture.dart';
-import 'route.dart';
+import '../../blocs/result/result.dart';
+import '../../models/model.dart';
+import '../../blocs/club/club.dart';
+import '../../blocs/fixture/fixture.dart';
+import '../../route/route.dart';
 
 class FixtureAddUpdate extends StatefulWidget {
   static const routeName = "admin_add_schedule";

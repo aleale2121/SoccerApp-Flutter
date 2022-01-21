@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:soccer_app/models/login_request.dart';
 
-import '../widgets/rounded_button.dart';
-import '../constants.dart';
-import '../blocs/auth/auth.dart';
-import '../models/user.dart';
-import 'admin_home_screen.dart';
-import 'user_home_screen.dart';
+import '../../widgets/rounded_button.dart';
+import '../../constants.dart';
+import '../../blocs/auth/auth.dart';
+import '../../models/user.dart';
+import '../home_screen/admin_home_screen.dart';
+import '../home_screen/user_home_screen.dart';
 import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/user/user.dart';
-import '../widgets/user_comp_admin.dart';
-import '../widgets/app_drawer_admin.dart';
-import 'splash_screen.dart';
+import '../../blocs/user/user.dart';
+import '../../widgets/user_comp_admin.dart';
+import '../../widgets/app_drawer_admin.dart';
+import '../splash_screen.dart';
 
 class AdminUsersScreen extends StatelessWidget {
   static const String routeName = "admin_users_screen";

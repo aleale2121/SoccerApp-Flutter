@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/result/result.dart';
-import '../widgets/result_comp_user.dart';
-import 'splash_screen.dart';
+import '../../blocs/result/result.dart';
+import '../../widgets/result_comp_user.dart';
+import '../splash_screen.dart';
 
 class UserResultsScreen extends StatelessWidget {
   @override

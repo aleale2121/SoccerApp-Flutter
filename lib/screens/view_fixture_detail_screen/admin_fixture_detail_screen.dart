@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:soccer_app/screens/route.dart';
+import 'package:soccer_app/route/route.dart';
 
 class AdminFixtureDetail extends StatelessWidget {
   static const routeName = 'courseDetail';

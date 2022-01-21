@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:soccer_app/blocs/auth/auth_blocs.dart';
 import 'package:soccer_app/blocs/auth/auth_events.dart';
-import '../models/model.dart';
-import '../blocs/user/user.dart';
+import '../../models/model.dart';
+import '../../blocs/user/user.dart';
 
 class PasswordChangeScreen extends StatefulWidget {
   static const routeName = "password_change_screen";

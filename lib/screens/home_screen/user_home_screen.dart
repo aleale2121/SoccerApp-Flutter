@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:soccer_app/models/model.dart';
-import 'package:soccer_app/screens/change_password_screen.dart';
-import 'package:soccer_app/screens/change_username_screen.dart';
-import 'package:soccer_app/screens/user_delete_account.dart';
+import 'package:soccer_app/screens/auth_screens/change_password_screen.dart';
+import 'package:soccer_app/screens/auth_screens/change_username_screen.dart';
+import 'package:soccer_app/screens/auth_screens/user_delete_account.dart';
 import 'package:soccer_app/util/util.dart';
 import 'package:soccer_app/widgets/app_drawer_user.dart';
-import 'user_fixtures_screen.dart';
-import 'user_results_screen.dart';
+import '../fixtures_screen/user_fixtures_screen.dart';
+import '../results_screen/user_results_screen.dart';
 
 class UserHome extends StatefulWidget {
   static const routeName = 'user_home';

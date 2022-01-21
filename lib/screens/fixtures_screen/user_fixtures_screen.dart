@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/fixture/fixture.dart';
-import '../widgets/fixture_comp_user.dart';
-import 'splash_screen.dart';
+import '../../blocs/fixture/fixture.dart';
+import '../../widgets/fixture_comp_user.dart';
+import '../splash_screen.dart';
 
 class UserFixturesScreen extends StatelessWidget {
   @override

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/fixture/fixture.dart';
-import '../widgets/fixture_comp_admin.dart';
-import 'splash_screen.dart';
+import '../../blocs/fixture/fixture.dart';
+import '../../widgets/fixture_comp_admin.dart';
+import '../splash_screen.dart';
 
 class AdminFixturesScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;

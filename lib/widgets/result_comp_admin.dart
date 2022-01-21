@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:soccer_app/screens/detailScreens/admin_result_detail_screen.dart';
+import 'package:soccer_app/screens/view_result_detail_screen/admin_result_detail_screen.dart';
 import '../blocs/result/result.dart';
-import '../screens/admin_add_result.dart';
-import '../screens/route.dart';
+import '../screens/edit_result_screen/admin_add_result.dart';
+import '../route/route.dart';
 import '../models/model.dart';
 import 'package:random_color/random_color.dart';
 

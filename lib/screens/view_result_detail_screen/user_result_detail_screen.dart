@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:soccer_app/screens/route.dart';
+import 'package:soccer_app/route/route.dart';
 
 class UserResultDetail extends StatelessWidget {
   static const routeName = 'admin_result_detail';

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/auth/auth.dart';
-import '../models/user.dart';
+import '../../blocs/auth/auth.dart';
+import '../../models/user.dart';
 import 'login_screen.dart';
-import 'user_home_screen.dart';
-import '../widgets/rounded_button.dart';
+import '../home_screen/user_home_screen.dart';
+import '../../widgets/rounded_button.dart';
 
-import '../constants.dart';
+import '../../constants.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String routeName = 'sign_up_screen';

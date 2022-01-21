@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/model.dart';
+import '../../models/model.dart';
 
 class FixtureComponent extends StatelessWidget {
   final Result result;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../widgets/app_drawer_admin.dart';
-import 'admin_fixtures_screen.dart';
-import 'admin_results_screen.dart';
-import 'admin_add_schedule.dart';
-import 'route.dart';
+import '../../widgets/app_drawer_admin.dart';
+import '../fixtures_screen/admin_fixtures_screen.dart';
+import '../results_screen/admin_results_screen.dart';
+import '../edit_fixture_screen/admin_add_schedule.dart';
+import '../../route/route.dart';
 
 class AdminHome extends StatefulWidget {
   static const routeName = 'admin_home';

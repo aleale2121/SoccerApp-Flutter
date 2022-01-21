@@ -12,7 +12,7 @@ import 'blocs/fixture/fixture.dart';
 import 'blocs/result/result.dart';
 import 'blocs/user/user.dart';
 import 'repository/repository.dart';
-import 'screens/route.dart';
+import 'route/route.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

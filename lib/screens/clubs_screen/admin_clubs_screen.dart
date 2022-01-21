@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../widgets/app_drawer_admin.dart';
-import '../blocs/club/club.dart';
-import 'splash_screen.dart';
+import '../../widgets/app_drawer_admin.dart';
+import '../../blocs/club/club.dart';
+import '../splash_screen.dart';
 
 class Clubs extends StatelessWidget {
   @override
