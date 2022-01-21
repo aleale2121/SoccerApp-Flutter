@@ -27,7 +27,7 @@ class FixtureComponent extends StatelessWidget {
                           backgroundColor: Colors.deepPurpleAccent,
                           radius: 50,
                           child: Text(
-                            result.fixture.clubs[0].name
+                            result.fixture!.firstClub
                                 .substring(0)
                                 .toUpperCase(),
                             style: TextStyle(
@@ -40,7 +40,9 @@ class FixtureComponent extends StatelessWidget {
                           height: 5,
                         ),
                         Container(
-                          child: Text(result.fixture.clubs[0].name),
+                          child: Text(
+                            result.fixture!.firstClub,
+                          ),
                         ),
                         SizedBox(
                           height: 5,
@@ -64,7 +66,9 @@ class FixtureComponent extends StatelessWidget {
                           height: 5,
                         ),
                         Container(
-                          child: Text(result.fixture.startingDate.toString()),
+                          child: Text(
+                            result.fixture!.matchDate.toString(),
+                          ),
                         )
                       ],
                     ),
@@ -74,7 +78,7 @@ class FixtureComponent extends StatelessWidget {
                           backgroundColor: Colors.deepPurpleAccent,
                           radius: 50,
                           child: Text(
-                            result.fixture.clubs[0].name
+                            result.fixture!.firstClub
                                 .substring(0)
                                 .toUpperCase(),
                             style: TextStyle(
@@ -87,7 +91,7 @@ class FixtureComponent extends StatelessWidget {
                           height: 5,
                         ),
                         Container(
-                          child: Text(result.fixture.clubs[0].name),
+                          child: Text(result.fixture!.firstClub[0]),
                         )
                       ],
                     ),

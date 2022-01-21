@@ -1,82 +1,117 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
-import 'package:soccer_app/util/util.dart';
-
-import '../models/club.dart';
-
-Util util = new Util();
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:soccer_app/models/result.dart';
 
 class Fixture {
-  final int? id;
-  final DateTime startingDate;
-  final List<Club> clubs;
-  final double stadiumLatitude;
-  final double stadiumLongitude;
+  final String? id;
+  final DateTime matchDate;
+  final double? stadiumLatitude;
+  final double? stadiumLongitude;
   final String stadiumName;
-  final String? refreeName;
+  final String refreeName;
+  final String firstClub;
+  final String secondClub;
+  final String status;
+   Result? result;
   Fixture({
-     this.id,
-    required this.startingDate,
-    required this.clubs,
-    required this.stadiumLatitude,
-    required this.stadiumLongitude,
+    this.id,
+    required this.matchDate,
+    this.stadiumLatitude,
+    this.stadiumLongitude,
     required this.stadiumName,
-     this.refreeName,
+    required this.refreeName,
+    required this.firstClub,
+    required this.secondClub,
+    this.status = "not started",
+    this.result,
   });
 
   Fixture copyWith({
-    int? id,
+    String? id,
     DateTime? startingDate,
-    List<Club>? clubs,
     double? stadiumLatitude,
     double? stadiumLongitude,
     String? stadiumName,
     String? refreeName,
+    String? firstClub,
+    String? secondClub,
+    final Result? result,
   }) {
     return Fixture(
       id: id ?? this.id,
-      startingDate: startingDate ?? this.startingDate,
-      clubs: clubs ?? this.clubs,
+      matchDate: startingDate ?? this.matchDate,
       stadiumLatitude: stadiumLatitude ?? this.stadiumLatitude,
       stadiumLongitude: stadiumLongitude ?? this.stadiumLongitude,
       stadiumName: stadiumName ?? this.stadiumName,
       refreeName: refreeName ?? this.refreeName,
+      firstClub: firstClub ?? this.firstClub,
+      secondClub: secondClub ?? this.secondClub,
+      result: result?? this.result,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'startingDate': startingDate.millisecondsSinceEpoch,
-      'clubs': clubs.map((x) => x.toMap()).toList(),
+      'matchDate': matchDate.toString(),
       'stadiumLatitude': stadiumLatitude,
       'stadiumLongitude': stadiumLongitude,
       'stadiumName': stadiumName,
       'refreeName': refreeName,
+      'firstClub': firstClub,
+      'secondClub': secondClub,
+    };
+  }
+
+  Map<String, dynamic> toSnapshoot() {
+    return {
+      'matchDate': matchDate.toString(),
+      'stadiumLatitude': stadiumLatitude,
+      'stadiumLongitude': stadiumLongitude,
+      'stadiumName': stadiumName,
+      'refreeName': refreeName,
+      'firstClub': firstClub,
+      'secondClub': secondClub,
     };
   }
 
   factory Fixture.fromMap(Map<String, dynamic> map) {
     return Fixture(
-      id: map['id']?.toInt() ?? 0,
-      startingDate: DateTime.fromMillisecondsSinceEpoch(map['startingDate']),
-      clubs: List<Club>.from(map['clubs']?.map((x) => Club.fromMap(x))),
-      stadiumLatitude: map['stadiumLatitude']?.toDouble() ?? 0.0,
-      stadiumLongitude: map['stadiumLongitude']?.toDouble() ?? 0.0,
+      id: map['id'],
+      matchDate: DateTime.parse(map['matchDate']),
+      stadiumLatitude: map['stadiumLatitude']?.toDouble(),
+      stadiumLongitude: map['stadiumLongitude']?.toDouble(),
       stadiumName: map['stadiumName'] ?? '',
       refreeName: map['refreeName'] ?? '',
+      firstClub: map['firstClub'] ?? '',
+      secondClub: map['secondClub'] ?? '',
     );
+  }
+
+  factory Fixture.fromSnapshoot(DocumentSnapshot snap) {
+    // String machDate = snap.get('matchDate');
+    return Fixture(
+        id: snap.id,
+        firstClub: snap.get('firstClub'),
+        secondClub: snap.get('secondClub'),
+        stadiumLatitude: double.parse(snap.get('stadiumLatitude').toString()),
+        stadiumLongitude: double.parse(snap.get('stadiumLongitude').toString()),
+        stadiumName: snap.get('stadiumName') ?? '',
+        refreeName: snap.get('refreeName') ?? '',
+        matchDate: DateTime.now()
+        // matchDate: DateTime.parse(snap.get('matchDate')),
+        );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Fixture.fromJson(String source) => Fixture.fromMap(json.decode(source));
+  factory Fixture.fromJson(String source) =>
+      Fixture.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'Fixture(id: $id, startingDate: $startingDate, clubs: $clubs, stadiumLatitude: $stadiumLatitude, stadiumLongitude: $stadiumLongitude, stadiumName: $stadiumName, refreeName: $refreeName)';
+    return 'Fixture(id: $id, matchDate: $matchDate, stadiumLatitude: $stadiumLatitude, stadiumLongitude: $stadiumLongitude, stadiumName: $stadiumName, refreeName: $refreeName, firstClub: $firstClub, secondClub: $secondClub)';
   }
 
   @override
@@ -84,23 +119,27 @@ class Fixture {
     if (identical(this, other)) return true;
 
     return other is Fixture &&
-      other.id == id &&
-      other.startingDate == startingDate &&
-      listEquals(other.clubs, clubs) &&
-      other.stadiumLatitude == stadiumLatitude &&
-      other.stadiumLongitude == stadiumLongitude &&
-      other.stadiumName == stadiumName &&
-      other.refreeName == refreeName;
+        other.id == id &&
+        other.matchDate == matchDate &&
+        other.stadiumLatitude == stadiumLatitude &&
+        other.stadiumLongitude == stadiumLongitude &&
+        other.stadiumName == stadiumName &&
+        other.refreeName == refreeName &&
+        other.firstClub == firstClub &&
+        other.secondClub == secondClub &&
+        other.result==result;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
-      startingDate.hashCode ^
-      clubs.hashCode ^
-      stadiumLatitude.hashCode ^
-      stadiumLongitude.hashCode ^
-      stadiumName.hashCode ^
-      refreeName.hashCode;
+        matchDate.hashCode ^
+        stadiumLatitude.hashCode ^
+        stadiumLongitude.hashCode ^
+        stadiumName.hashCode ^
+        refreeName.hashCode ^
+        firstClub.hashCode ^
+        secondClub.hashCode ^
+        result.hashCode;
   }
 }

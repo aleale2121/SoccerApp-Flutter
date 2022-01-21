@@ -1,33 +1,41 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import '../../models/fixture.dart';
 
-abstract class FixtureEvents extends Equatable {}
-
-class GetFixturesEvent extends FixtureEvents {
-  GetFixturesEvent();
+abstract class FixtureEvents extends Equatable {
+  const FixtureEvents();
   @override
   List<Object> get props => [];
 }
 
-class PostFixtureEvent extends FixtureEvents {
+class LoadFixtures extends FixtureEvents {}
+
+class AddFixture extends FixtureEvents {
   final Fixture fixture;
-  PostFixtureEvent({required this.fixture});
+  AddFixture({required this.fixture});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [fixture];
 }
 
-class UpdateFixtureEvent extends FixtureEvents {
+class UpdateFixture extends FixtureEvents {
   final Fixture fixture;
-  UpdateFixtureEvent({required this.fixture});
+  UpdateFixture({required this.fixture});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [fixture];
 }
 
-class DeleteFixtureEvent extends FixtureEvents {
+class DeleteFixture extends FixtureEvents {
   final String fixtureId;
-  DeleteFixtureEvent({required this.fixtureId});
+  DeleteFixture({required this.fixtureId});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [fixtureId];
+}
+
+class FixturesUpdated extends FixtureEvents {
+  final List<Fixture> fixtures;
+  const FixturesUpdated({
+    required this.fixtures,
+  });
+  @override
+  List<Object> get props => [fixtures];
 }

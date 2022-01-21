@@ -12,7 +12,7 @@ class Clubs extends StatelessWidget {
         title: Text('Clubs'),
       ),
       drawer: AppDrawer(),
-      body: BlocBuilder<ClubsBloc, ClubStates>(
+      body: BlocBuilder<ClubsBloc, ClubsState>(
         builder: (_, state) {
           if (state is ClubsFetchingState) {
             return SplashScreen(title: 'Fetching Clubs');

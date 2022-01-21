@@ -2,29 +2,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/model.dart';
 
 class Util {
-  Future<void> storeUserInformation(User user) async {
+  Future<void> storeUserInformation(UsersInfo userI) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('id', user.id!);
-    await prefs.setInt('role_id', user.roleId);
-    await prefs.setString('full_name', user.fullName);
-    await prefs.setString('email', user.email);
-    await prefs.setString('password', user.password);
-    await prefs.setString('phone', user.phone);
-    await prefs.setString('role_name', user.role!.name);
+    await prefs.setString('user', userI.toJson());
   }
 
-  Future<User> getUserInformation() async {
+  Future<UsersInfo?> getUserInformation() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    User user = new User(
-        id: prefs.getInt('id')!,
-        role:
-            Role(id: prefs.getInt('id')!, name: prefs.getString('role_name')!),
-        password: prefs.getString('password')!,
-        email: prefs.getString('email')!,
-        phone: prefs.getString('phone')!,
-        roleId: prefs.getInt('role_id')!,
-        fullName: prefs.getString('full_name')!);
-    return user;
+    String? userEncoded = prefs.getString('user');
+    if (userEncoded != null) {
+      UsersInfo? user = UsersInfo.fromJson(userEncoded);
+      return user;
+    }
   }
 
   Future<void> storeTokenAndExpiration(String expiry, String token) async {
@@ -33,7 +22,7 @@ class Util {
     await prefs.setString('expiry', expiry);
   }
 
-  Future<String> getUserToken() async {
+  Future<String?> getUserToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token')!;
   }

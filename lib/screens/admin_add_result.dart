@@ -24,7 +24,7 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
 
   int firstClubScore = 0;
   int secondClubScore = 0;
-  late Result result ;
+  late Result result;
   bool isInit = false;
   @override
   void didChangeDependencies() {
@@ -57,22 +57,22 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
         id: widget.resultArgs.result!.id,
         firstClubScore: firstClubScore,
         secondClubScore: secondClubScore,
-        fixture: widget.resultArgs.result!.fixture,
-        fixtureId: widget.resultArgs.result!.fixture.id!,
+        fixtureId: widget.resultArgs.result!.fixture!.id!,
+        goals: widget.resultArgs.result!.goals,
       );
 
       BlocProvider.of<ResultsBloc>(context, listen: false)
-        ..add(UpdateResultEvent(result: result));
+        ..add(UpdateResult(result: result));
     } else {
       result = Result(
-        firstClubScore: firstClubScore,
-        secondClubScore: secondClubScore,
-        fixture: widget.resultArgs.fixture!,
-        fixtureId: widget.resultArgs.fixture!.id!,
-      );
+          firstClubScore: firstClubScore,
+          secondClubScore: secondClubScore,
+          fixture: widget.resultArgs.fixture!,
+          fixtureId: widget.resultArgs.fixture!.id!,
+          goals: []);
 
       BlocProvider.of<ResultsBloc>(context, listen: false)
-        ..add(PostResultEvent(result: result));
+        ..add(AddResult(result: result));
     }
   }
 
@@ -107,8 +107,8 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
                 SnackBar(content: Text('Error updating the result')));
           }
           if ((state is ResultPostedState) || (state is ResultUpdatedState)) {
-            BlocProvider.of<FixturesBloc>(context).add(GetFixturesEvent());
-            BlocProvider.of<ResultsBloc>(context).add(GetResultsEvent());
+            BlocProvider.of<FixturesBloc>(context).add(LoadFixtures());
+            BlocProvider.of<ResultsBloc>(context).add(LoadResults());
             Navigator.pop(context);
           }
         },
@@ -147,8 +147,8 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
                       decoration: new InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: widget.resultArgs.edit
-                              ? widget.resultArgs.result?.fixture.clubs[0].name
-                              : widget.resultArgs.fixture?.clubs[0].name,
+                              ? widget.resultArgs.result?.fixture!.firstClub
+                              : widget.resultArgs.fixture?.firstClub,
                           hintText: 'Enter Score'),
                     ),
                   ),
@@ -170,8 +170,11 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
                             .requestFocus(_secondClubResultFocusNode);
                       },
                       validator: (value) {
-                        if (value!.isEmpty) {
+                        if (value == null) {
                           return 'value cannot input';
+                        }
+                        if (int.tryParse(value) == null) {
+                          return 'invalid input';
                         }
                         return null;
                       },
@@ -181,8 +184,8 @@ class ResultAddUpdateState extends State<ResultAddUpdate> {
                       decoration: new InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: widget.resultArgs.edit
-                              ? widget.resultArgs.result?.fixture.clubs[1].name
-                              : widget.resultArgs.fixture?.clubs[1].name,
+                              ? widget.resultArgs.result?.fixture!.secondClub
+                              : widget.resultArgs.fixture?.secondClub,
                           hintText: 'Enter Score'),
                     ),
                   ),

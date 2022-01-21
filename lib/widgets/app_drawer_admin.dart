@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/user/user.dart';
 import '../screens/admin_users_screen.dart';
 import '../blocs/auth/auth.dart';
-import '../screens/admin_role_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -37,19 +36,10 @@ class AppDrawer extends StatelessWidget {
             Divider(),
             ListTile(
               leading: Icon(Icons.payment),
-              title: Text('Role'),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pushNamed(AdminRoleScreen.routeName);
-              },
-            ),
-            Divider(),
-            ListTile(
-              leading: Icon(Icons.payment),
               title: Text('Users'),
               onTap: () {
                 Navigator.of(context).pop();
-                BlocProvider.of<UserBloc>(context).add(GetUsersEvent());
+                BlocProvider.of<UserBloc>(context).add(LoadUsers());
                 Navigator.of(context)
                     .pushReplacementNamed(AdminUsersScreen.routeName);
               },

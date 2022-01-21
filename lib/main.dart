@@ -1,38 +1,50 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'blocs/Role/role.dart';
+import 'bloc_observer.dart';
 import 'blocs/auth/auth.dart';
 import 'blocs/club/club.dart';
 import 'blocs/fixture/fixture.dart';
 import 'blocs/result/result.dart';
 import 'blocs/user/user.dart';
-import 'data_provider/data.dart';
 import 'repository/repository.dart';
-import 'repository/role_repository.dart';
 import 'screens/route.dart';
-import 'util/util.dart';
-void main() {
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FlutterSecureStorage _flutterSecureStorage = FlutterSecureStorage();
   final UserRepository userRepository = UserRepository(
-      userDataProvider: UserDataProvider(httpClient: http.Client()));
+    auth: _firebaseAuth,
+    firebaseFirestore: _firebaseFirestore,
+    secureStorage: _flutterSecureStorage,
+  );
   ClubRepository clubRepository = ClubRepository(
-      clubDataProvider: ClubDataProvider(httpClient: http.Client()));
+    firebaseFirestore: _firebaseFirestore,
+  );
   FixtureRepository fixtureRepository = FixtureRepository(
-      fixtureDataProvider: FixtureDataProvider(httpClient: http.Client()));
+    firebaseFirestore: _firebaseFirestore,
+  );
   ResultRepository resultRepository = ResultRepository(
-      resultDataProvider: ResultDataProvider(httpClient: http.Client()));
-  RoleRepository roleRepository = RoleRepository(
-      roleDataProvider: RoleDataProvider(httpClient: http.Client()));
-
-  runApp(SoccerApp(
-    userRepository: userRepository,
-    clubRepository: clubRepository,
-    fixtureRepository: fixtureRepository,
-    resultRepository: resultRepository,
-    roleRepository: roleRepository,
-  ));
+    firebaseFirestore: _firebaseFirestore,
+  );
+  print("----------------");
+  print(DateTime.now());
+  BlocOverrides.runZoned(
+    () => runApp(SoccerApp(
+      userRepository: userRepository,
+      clubRepository: clubRepository,
+      fixtureRepository: fixtureRepository,
+      resultRepository: resultRepository,
+    )),
+    blocObserver: SimpleBlocObserver(),
+  );
 }
 
 class SoccerApp extends StatelessWidget {
@@ -40,17 +52,13 @@ class SoccerApp extends StatelessWidget {
   final ClubRepository clubRepository;
   final FixtureRepository fixtureRepository;
   final ResultRepository resultRepository;
-  final RoleRepository roleRepository;
   const SoccerApp({
     Key? key,
     required this.userRepository,
     required this.clubRepository,
     required this.fixtureRepository,
     required this.resultRepository,
-    required this.roleRepository,
   }) : super(key: key);
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,41 +76,36 @@ class SoccerApp extends StatelessWidget {
         RepositoryProvider<ResultRepository>(
           create: (_) => this.resultRepository,
         ),
-        RepositoryProvider<RoleRepository>(create: (_) => this.roleRepository),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthBloc>(
-            create: (_) =>
-                AuthBloc(
-                  userRepository: this.userRepository, util: Util()
-                )
-                  ..add(AutoLoginEvent()),
+            create: (_) => AuthBloc(
+              userRepository: this.userRepository,
+            )..add(AutoLoginEvent()),
           ),
           BlocProvider<ClubsBloc>(
             create: (_) => ClubsBloc(clubsRepository: this.clubRepository)
               ..add(
-                GetClubsEvent(),
+                LoadClubs(),
               ),
           ),
           BlocProvider<FixturesBloc>(
             create: (_) =>
                 FixturesBloc(fixturesRepository: this.fixtureRepository)
                   ..add(
-                    GetFixturesEvent(),
+                    LoadFixtures(),
                   ),
           ),
           BlocProvider<ResultsBloc>(
             create: (_) => ResultsBloc(resultRepository: this.resultRepository)
-              ..add(GetResultsEvent()),
-          ),
-          BlocProvider<RoleBloc>(
-            create: (_) => RoleBloc(roleRepository: this.roleRepository)
-              ..add(GetRoleEvent()),
+              ..add(LoadResults()),
           ),
           BlocProvider<UserBloc>(
             create: (_) => UserBloc(userRepository: this.userRepository)
-              ..add(GetUsersEvent()),
+              ..add(
+                LoadUsers(),
+              ),
           ),
         ],
         child: MaterialApp(

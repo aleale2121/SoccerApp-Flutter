@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/Role/role.dart';
-import '../screens/admin_manage_user_role_screen.dart';
 import '../models/user.dart';
 
 class UserComponent extends StatelessWidget {
-  final User user;
+  final UsersInfo user;
 
   UserComponent({required this.user});
 
@@ -19,7 +16,7 @@ class UserComponent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              user.fullName,
+              user.displayName,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -30,17 +27,7 @@ class UserComponent extends StatelessWidget {
             ),
           ],
         ),
-        subtitle: Text(user.role!.name),
-        trailing: IconButton(
-          icon: Icon(Icons.edit),
-          onPressed: () {
-            //BlocProvider.of<RoleBloc>(context).add(GetRoleEvent());
-            Navigator.of(context).pushNamed(
-              AdminEditUserRole.routeName,
-              arguments: user,
-            );
-          },
-        ),
+        subtitle: Text(user.role),
       ),
     );
   }

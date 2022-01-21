@@ -65,7 +65,7 @@ class ResultComponentAdmin extends StatelessWidget {
                                   backgroundColor: _randomColor.randomColor(),
                                   radius: 25,
                                   child: Text(
-                                    result.fixture.clubs[0].name[0]
+                                    result.fixture!.firstClub[0]
                                         .toUpperCase(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -77,7 +77,7 @@ class ResultComponentAdmin extends StatelessWidget {
                                   height: 5,
                                 ),
                                 Container(
-                                  child: Text(result.fixture.clubs[0].name),
+                                  child: Text(result.fixture!.firstClub),
                                 )
                               ],
                             ),
@@ -121,7 +121,7 @@ class ResultComponentAdmin extends StatelessWidget {
                                 ),
                                 Container(
                                   child: Text(
-                                      result.fixture.startingDate.toString()),
+                                      result.fixture!.matchDate.toString()),
                                 )
                               ],
                             ),
@@ -131,7 +131,7 @@ class ResultComponentAdmin extends StatelessWidget {
                                   backgroundColor: _randomColor.randomColor(),
                                   radius: 25,
                                   child: Text(
-                                    result.fixture.clubs[1].name[0]
+                                    result.fixture!.secondClub[0]
                                         .toUpperCase(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -143,7 +143,7 @@ class ResultComponentAdmin extends StatelessWidget {
                                   height: 5,
                                 ),
                                 Container(
-                                  child: Text(result.fixture.clubs[1].name),
+                                  child: Text(result.fixture!.secondClub),
                                 )
                               ],
                             ),
@@ -187,7 +187,7 @@ class ResultComponentAdmin extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           BlocProvider.of<ResultsBloc>(context).add(
-                              DeleteResultEvent(
+                              DeleteResult(
                                   resultId: result.id.toString()));
                         },
                         child: Column(

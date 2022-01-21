@@ -19,7 +19,7 @@ class AdminUsersScreen extends StatelessWidget {
           listener: (_, state) {
             if (state is UserDeletedState) {
               BlocProvider.of<UserBloc>(context, listen: false)
-                  .add(GetUsersEvent());
+                  .add(LoadUsers());
             }
           },
           builder: (_, state) {

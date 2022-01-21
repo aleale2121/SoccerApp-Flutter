@@ -1,92 +1,81 @@
-import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:soccer_app/models/login_request.dart';
+import 'package:soccer_app/models/custom_exception.dart';
+import 'package:soccer_app/shared/constants.dart';
 import '../../blocs/auth/auth.dart';
 import '../../repository/user_repository.dart';
-import '../../util/util.dart';
 import '../../models/model.dart';
 
 class AuthBloc extends Bloc<AuthEvents, AuthStates> {
-  final UserRepository userRepository;
-  final Util util;
+  final UserRepository _userRepository;
 
-  AuthBloc({required this.userRepository, required this.util})
-      : super(AuthUninitializedState());
-
-  Stream<AuthStates> mapEventToState(AuthEvents event) async* {
-    if (event is AutoLoginEvent) {
-      yield* _mapAutoLoginEventToState();
-    } else if (event is LoginEvent) {
-      yield* _mapLoginEventToState(event.user);
-    } else if (event is SignUpEvent) {
-      yield* _mapSignUpEventToState(event.user);
-    } else {
-      return;
-    }
+  AuthBloc({required UserRepository userRepository})
+      : _userRepository = userRepository,
+        super(AuthUninitializedState()) {
+    on<AutoLoginEvent>(_onAutoLogin);
+    on<LoginEvent>(_onLogin);
+    on<SignUpEvent>(_onSignup);
+    // on<LogOutEvent>();
   }
 
-  Stream<AuthStates> _mapLoginEventToState(LoginRequestModel user) async* {
-    yield LoggingState();
-    User u;
+  void _onAutoLogin(AutoLoginEvent event, Emitter<AuthStates> emit) async {
+    emit(AutoLoginState());
+    UsersInfo? u;
     try {
-      u = await userRepository.login(user);
-      await util.storeUserInformation(u);
-      yield LoginSuccessState(user: u);
+      u = await _userRepository.autoLogin();
+      emit(AutoLoginSuccessState(user: u!));
     } on HttpException catch (e) {
-      if (e.message == 'Incorrect username or password') {
-        yield IncorrectUsernameOrPasswordState();
-      } else if (e.message == 'Invalid Input') {
-        yield InvalidInputState();
-      } else {
-        yield LoginFailedState(message: "");
-      }
+      emit(
+        AutoLoginFailedState(
+          message: errorMessages[e.message] != null
+              ? errorMessages[e.message]!
+              : "Failed To Login",
+        ),
+      );
+    } on CustomException catch (e) {
+      emit(AutoLoginFailedState(message: e.cause));
     } catch (e) {
-      yield LoginFailedState(message: "");
+      emit(AutoLoginFailedState(message: "Failed To Login"));
     }
   }
 
-  Stream<AuthStates> _mapSignUpEventToState(User user) async* {
-    yield SigningUpState();
-    User u;
+  void _onLogin(LoginEvent event, Emitter<AuthStates> emit) async {
+    emit(LoggingState());
+    UsersInfo? u;
     try {
-      u = await userRepository.signUp(user);
-      yield SignUpSuccessState(user: u);
+      u = await _userRepository.login(event.user);
+      emit(LoginSuccessState(user: u!));
     } on HttpException catch (e) {
-      if (e.message == 'Email already exists!') {
-        yield EmailAlreadyExistState();
-      } else if (e.message == 'Phone No already exists!') {
-        yield PhoneAlreadyExistState();
-      } else {
-        yield SignUpFailedState(message: "");
-      }
+      emit(
+        LoginFailedState(
+          message: errorMessages[e.message] != null
+              ? errorMessages[e.message]!
+              : "Failed To Login",
+        ),
+      );
+    } on CustomException catch (e) {
+      emit(LoginFailedState(message: e.cause));
     } catch (e) {
-      yield SignUpFailedState(message: "");
+      emit(LoginFailedState(message: "Failed To Login"));
     }
   }
 
-  Stream<AuthStates> _mapAutoLoginEventToState() async* {
-    yield AutoLoginState();
+  void _onSignup(SignUpEvent event, Emitter<AuthStates> emit) async {
+    emit(SigningUpState());
     try {
-      String token = await util.getUserToken();
-      if (token == null) {
-        yield AutoLoginFailedState(message: "");
-        return;
-      }
-      String expiry = await util.getUserToken();
-      if (expiry == null) {
-        yield AutoLoginFailedState(message: "");
-        return;
-      }
-      bool isExpired = util.isExpired(expiry);
-      if (isExpired) {
-        yield AutoLoginFailedState(message: "");
-        return;
-      } else {
-        User user = await util.getUserInformation();
-        yield AutoLoginSuccessState(user: user);
-      }
+      await _userRepository.signUp(event.user);
+      emit(SignUpSuccessState(user: event.user));
+    } on HttpException catch (e) {
+      emit(
+        SignUpFailedState(
+          message: errorMessages[e.message] != null
+              ? errorMessages[e.message]!
+              : "Failed To Signup",
+        ),
+      );
+    } on CustomException catch (e) {
+      emit(SignUpFailedState(message: e.cause));
     } catch (e) {
-      yield AutoLoginFailedState(message: "");
+      emit(SignUpFailedState(message: "Failed To Signup"));
     }
   }
 }

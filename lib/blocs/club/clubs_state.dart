@@ -1,50 +1,53 @@
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
 import '../../models/club.dart';
 
-abstract class ClubStates {}
+abstract class ClubsState extends Equatable {
+  const ClubsState();
 
-class ClubUninitializedState extends ClubStates {}
+  @override
+  List<Object> get props => [];
+}
 
-class ClubsFetchingState extends ClubStates {}
+class ClubsFetchingState extends ClubsState {}
 
-class ClubFetchedState extends ClubStates {
+class ClubFetchedState extends ClubsState {
   final List<Club> clubs;
   ClubFetchedState({required this.clubs});
 }
 
-class ClubsFetchingErrorState extends ClubStates {
+class ClubsFetchingErrorState extends ClubsState {
   final String message;
 
   ClubsFetchingErrorState({required this.message});
 }
 
-class ClubDeletingState extends ClubStates {}
+class ClubDeletingState extends ClubsState {}
 
-class ClubDeletedState extends ClubStates {}
+class ClubDeletedState extends ClubsState {}
 
-class ClubsDeletingErrorState extends ClubStates {
+class ClubsDeletingErrorState extends ClubsState {
   final String message;
 
   ClubsDeletingErrorState({required this.message});
 }
 
-class ClubPostingState extends ClubStates {}
+class ClubPostingState extends ClubsState {}
 
-class ClubPostedState extends ClubStates {}
+class ClubPostedState extends ClubsState {}
 
-class ClubPostingErrorState extends ClubStates {
+class ClubPostingErrorState extends ClubsState {
   final String message;
 
-  ClubPostingErrorState({required  this.message});
+  ClubPostingErrorState({required this.message});
 }
 
-class ClubUpdatingState extends ClubStates {}
+class ClubUpdatingState extends ClubsState {}
 
-class ClubUpdatedState extends ClubStates {}
+class ClubUpdatedState extends ClubsState {}
 
-class ClubUpdatingErrorState extends ClubStates {
+class ClubUpdatingErrorState extends ClubsState {
   final String message;
   ClubUpdatingErrorState({required this.message});
 }
 
-class ClubsEmptyState extends ClubStates {}
+class ClubsEmptyState extends ClubsState {}

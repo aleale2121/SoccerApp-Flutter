@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/user/user.dart';
-import '../screens/admin_users_screen.dart';
 import '../blocs/auth/auth.dart';
-import '../screens/admin_role_screen.dart';
 
 class UserAppDrawer extends StatelessWidget {
   @override

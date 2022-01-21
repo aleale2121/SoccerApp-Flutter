@@ -21,7 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late String email;
   late String phone;
   late String password;
-  int roleId = 1;
+   String role='user';
 
   @override
   build(BuildContext context) {
@@ -145,12 +145,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           if (!form!.validate()) {
                             return;
                           }
-                          User user = new User(
-                            fullName: fullName,
+                          UsersInfo user = new UsersInfo(
+                            displayName: fullName,
                             email: email,
                             phone: phone,
                             password: password,
-                            roleId: roleId,
+                            role: role,
                           );
                           SignUpEvent signUpEvent = new SignUpEvent(user: user);
                           BlocProvider.of<AuthBloc>(context).add(signUpEvent);

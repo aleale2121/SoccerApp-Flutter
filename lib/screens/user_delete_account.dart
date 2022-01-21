@@ -17,33 +17,37 @@ class DeleteAccountPage extends StatelessWidget {
         title: Text("Delete Account"),
       ),
       body: Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Text("Are You Sure You want to delete your Account??",style: TextStyle(
-                    color: Colors.redAccent
-                  ),),
-                  TextButton(
-                      onPressed: () async{
-                        Util util = new Util();
-                        User user=await util.getUserInformation();
-                        context.read<UserBloc>().add(
-                            DeleteUserEvent(userId:user.id.toString()));
-                        Navigator.of(context).pushNamed(LoginScreen.routeName);
-
-                      },
-                      child: Text("YES")),
-                  TextButton(
-                      onPressed: () {
-
-                        Navigator.of(context).pop();
-                      },
-                      child: Text("No"))
-                ],
-              )),
-            );
-          }
-
+        child: Column(
+          children: [
+            SizedBox(
+              height: 30,
+            ),
+            Text(
+              "Are You Sure You want to delete your Account??",
+              style: TextStyle(color: Colors.redAccent),
+            ),
+            TextButton(
+                onPressed: () async {
+                  Util util = new Util();
+                  UsersInfo? user = await util.getUserInformation();
+                  if (user != null) {
+                    context.read<UserBloc>().add(
+                          DeleteUser(
+                            userId: user.uuid!,
+                          ),
+                        );
+                    Navigator.of(context).pushNamed(LoginScreen.routeName);
+                  }
+                },
+                child: Text("YES")),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("No"))
+          ],
+        ),
+      ),
+    );
+  }
 }

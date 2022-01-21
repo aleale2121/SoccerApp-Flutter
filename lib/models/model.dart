@@ -5,3 +5,4 @@ export 'result.dart';
 export 'result.dart';
 export 'scorer.dart';
 export 'user.dart';
+export 'login_request.dart';

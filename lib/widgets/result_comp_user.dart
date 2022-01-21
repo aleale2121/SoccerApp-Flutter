@@ -56,7 +56,7 @@ class ResultComponent extends StatelessWidget {
                             backgroundColor: _randomColor.randomColor(),
                             radius: 25,
                             child: Text(
-                              result.fixture.clubs[0].name[0].toUpperCase(),
+                              result.fixture!.firstClub[0].toUpperCase(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 30.0,
@@ -67,7 +67,7 @@ class ResultComponent extends StatelessWidget {
                             height: 5,
                           ),
                           Container(
-                            child: Text(result.fixture.clubs[0].name),
+                            child: Text(result.fixture!.firstClub),
                           )
                         ],
                       ),
@@ -109,7 +109,7 @@ class ResultComponent extends StatelessWidget {
                             height: 5,
                           ),
                           Container(
-                            child: Text(result.fixture.startingDate.toString()),
+                            child: Text(result.fixture!.matchDate.toString()),
                           )
                         ],
                       ),
@@ -119,7 +119,7 @@ class ResultComponent extends StatelessWidget {
                             backgroundColor: _randomColor.randomColor(),
                             radius: 25,
                             child: Text(
-                              result.fixture.clubs[1].name[0].toUpperCase(),
+                              result.fixture!.secondClub[1].toUpperCase(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 30.0,
@@ -130,7 +130,7 @@ class ResultComponent extends StatelessWidget {
                             height: 5,
                           ),
                           Container(
-                            child: Text(result.fixture.clubs[1].name),
+                            child: Text(result.fixture!.secondClub[1]),
                           )
                         ],
                       ),

@@ -20,9 +20,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  late String email;
+   String? email;
 
-  late String password;
+   String? password;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: BlocConsumer<AuthBloc, AuthStates>(
             listener: (_, state) {
               if (state is LoginSuccessState) {
-                if (state.user.role!.name.toUpperCase() == 'ADMIN') {
+                if (state.user.role.toUpperCase() == 'ADMIN') {
                   Navigator.of(context)
                       .pushReplacementNamed(AdminHome.routeName);
                 } else {
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ? Container(
                           child: Center(
                               child: Text(
-                          'Failed to Authenticate',
+                          state.message,
                           style: TextStyle(
                             color: Colors.red,
                             fontWeight: FontWeight.bold,
@@ -126,7 +126,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (!form!.validate()) {
                         return;
                       }
-                      LoginRequestModel user = new LoginRequestModel(email: email, password: password);
+                      if (email==null || password==null) {
+                        return;
+                      }
+                      LoginRequestModel user = new LoginRequestModel(email: email!, password: password!);
                       LoginEvent loginEvent = new LoginEvent(user: user);
                       BlocProvider.of<AuthBloc>(context).add(loginEvent);
                     },

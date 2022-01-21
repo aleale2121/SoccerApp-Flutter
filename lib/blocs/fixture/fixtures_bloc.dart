@@ -1,80 +1,70 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:soccer_app/models/custom_exception.dart';
 import '../../models/fixture.dart';
-import '../../models/http_exception.dart';
 import '../../repository/fixture_repository.dart';
 import 'fixtures_event.dart';
 import 'fixtures_state.dart';
 
 class FixturesBloc extends Bloc<FixtureEvents, FixtureStates> {
-  FixtureRepository fixturesRepository;
-  FixturesBloc({required this.fixturesRepository})
-      : super(FixtureUninitializedState());
+  FixtureRepository _fixturesRepository;
 
-  
-  Stream<FixtureStates> mapEventToState(FixtureEvents event) async* {
-    if (event is GetFixturesEvent) {
-      yield* _mapGetFixturesEventToState();
-    } else if (event is PostFixtureEvent) {
-      print('-------------------------------------vdsfhdfjdf-------');
-      yield* _mapPostFixturesEventToState(event.fixture);
-    } else if (event is UpdateFixtureEvent) {
-      yield* _mapUpdateFixtureEventToState(event.fixture);
-    } else if (event is DeleteFixtureEvent) {
-      yield* _mapDeleteFixtureEventToState(event.fixtureId);
+  FixturesBloc({required FixtureRepository fixturesRepository})
+      : _fixturesRepository = fixturesRepository,
+        super(FixturesFetchingState()) {
+    on<LoadFixtures>(_onLoadFixtures);
+    on<AddFixture>(_onAddFixture);
+    on<UpdateFixture>(_onUpdateFixture);
+    on<DeleteFixture>(_onDeleteFixture);
+    on<FixturesUpdated>(_onFixturesUpdated);
+  }
+
+  Future<void> _onLoadFixtures(
+      LoadFixtures event, Emitter<FixtureStates> emit) {
+    return emit.onEach<List<Fixture>>(
+      _fixturesRepository.fixtures(),
+      onData: (fixtures) => add(FixturesUpdated(fixtures: fixtures)),
+    );
+  }
+
+  void _onAddFixture(AddFixture event, Emitter<FixtureStates> emit) {
+    emit(FixturePostingState());
+    try {
+      _fixturesRepository.addFixture(event.fixture);
+      emit(FixturePostedState());
+    } on CustomException catch (e) {
+      emit(FixturePostingErrorState(message: e.cause));
+    } catch (e) {
+      emit(FixturePostingErrorState(message: "Failed To Add Fixture"));
     }
   }
 
-  Stream<FixtureStates> _mapGetFixturesEventToState() async* {
-    yield FixturesFetchingState();
+  void _onUpdateFixture(UpdateFixture event, Emitter<FixtureStates> emit) {
+    emit(FixtureUpdatingState());
     try {
-      List<Fixture> fixtures = await fixturesRepository.getAndSetFixtures();
-      if (fixtures.length == 0) {
-        yield FixturesEmptyState();
-      } else {
-        yield FixturesFetchedState(fixtures: fixtures);
-      }
-    } on HttpException catch (e) {
-      yield FixturesFetchingErrorState(message: e.message);
+      _fixturesRepository.updateFixture(event.fixture);
+      emit(FixtureUpdatedState());
+    } on CustomException catch (e) {
+      emit(FixtureUpdatingErrorState(message: e.cause));
     } catch (e) {
-      print(e.toString());
-      yield FixturesFetchingErrorState();
+      emit(FixtureUpdatingErrorState(message: "Failed To Update Fixture"));
     }
   }
 
-  Stream<FixtureStates> _mapPostFixturesEventToState(Fixture fixture) async* {
-    yield FixturePostingState();
+  void _onDeleteFixture(DeleteFixture event, Emitter<FixtureStates> emit) {
+    emit(FixtureDeletingState());
     try {
-      await fixturesRepository.postFixture(fixture);
-      yield FixturePostedState();
-    } on HttpException catch (e) {
-      yield FixturePostingErrorState(message: e.message);
+      _fixturesRepository.deleteFixture(event.fixtureId);
+      emit(FixtureDeletedState());
+    } on CustomException catch (e) {
+      emit(FixturesDeletingErrorState(message: e.cause));
     } catch (e) {
-      yield FixturePostingErrorState();
+      emit(
+        FixturesDeletingErrorState(message: "Failed To Delete Fixture"),
+      );
     }
   }
-
-  Stream<FixtureStates> _mapUpdateFixtureEventToState(Fixture fixture) async* {
-    yield FixtureUpdatingState();
-    try {
-      await fixturesRepository.putFixture(fixture);
-      yield FixtureUpdatedState();
-    } on HttpException catch (e) {
-      yield FixtureUpdatingErrorState(message: e.message);
-    } catch (e) {
-      yield FixtureUpdatingErrorState();
-    }
-  }
-
-  Stream<FixtureStates> _mapDeleteFixtureEventToState(String fixtureId) async* {
-    yield FixtureDeletingState();
-    try {
-      await fixturesRepository.deleteFixture(fixtureId);
-      yield FixtureDeletedState();
-    } on HttpException catch (e) {
-      yield FixturesDeletingErrorState(message: e.message);
-    } catch (e) {
-      yield FixturesDeletingErrorState();
-    }
+  void _onFixturesUpdated(FixturesUpdated event, Emitter<FixtureStates> emit) {
+    emit(FixturesFetchedState(fixtures: event.fixtures));
   }
 }

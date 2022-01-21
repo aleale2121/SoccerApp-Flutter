@@ -1,33 +1,42 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
+
 import '../../models/club.dart';
 
 abstract class ClubEvents extends Equatable {}
 
-class GetClubsEvent extends ClubEvents {
-  GetClubsEvent();
+class LoadClubs extends ClubEvents {
+  LoadClubs();
   @override
   List<Object> get props => [];
 }
 
-class PostClubEvent extends ClubEvents {
+class PostClub extends ClubEvents {
   final Club club;
-  PostClubEvent({required this.club});
+  PostClub({required this.club});
   @override
   List<Object> get props => [];
 }
 
-class UpdateClubEvent extends ClubEvents {
+class UpdateClub extends ClubEvents {
   final Club club;
-  UpdateClubEvent({required this.club});
+  UpdateClub({required this.club});
   @override
   List<Object> get props => [];
 }
 
-class DeleteClubEvent extends ClubEvents {
+class DeleteClub extends ClubEvents {
   final String clubId;
-  DeleteClubEvent({required this.clubId});
+  DeleteClub({required this.clubId});
 
   @override
   List<Object> get props => [];
+}
+
+class ClubsUpdated extends ClubEvents {
+  final List<Club> clubs;
+  ClubsUpdated({
+    required this.clubs,
+  });
+  @override
+  List<Object?> get props => [];
 }

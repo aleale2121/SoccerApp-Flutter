@@ -11,9 +11,9 @@ class UserFixtureDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${this.fixture.fixture.clubs[0].name}' +
+        title: Text('${this.fixture.fixture.firstClub}' +
             "Vs" +
-            '${this.fixture.fixture.clubs[1].name}'),
+            '${this.fixture.fixture.secondClub}'),
       ),
       body: Center(
         child: Column(
@@ -33,7 +33,7 @@ class UserFixtureDetail extends StatelessWidget {
               "--------------------------------------------",
               style: TextStyle(color: Colors.redAccent),
             ),
-            Text('StartingDate: ${this.fixture.fixture.startingDate}'),
+            Text('StartingDate: ${this.fixture.fixture.matchDate}'),
             SizedBox(
               height: 10,
             ),

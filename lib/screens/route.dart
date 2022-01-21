@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:soccer_app/screens/admin_manage_user_role_screen.dart';
 import 'package:soccer_app/screens/admin_users_screen.dart';
 import 'package:soccer_app/screens/change_password_screen.dart';
 import 'package:soccer_app/screens/change_username_screen.dart';
@@ -12,8 +11,6 @@ import 'detailScreens/admin_result_detail_screen.dart';
 import 'detailScreens/user_fixture_detail_screen.dart';
 import 'detailScreens/user_result_detail_screen.dart';
 import 'signup_screen.dart';
-import 'admin_add_role_screen.dart';
-import 'admin_role_screen.dart';
 import 'splash_screen.dart';
 import 'admin_home_screen.dart';
 import 'login_screen.dart';
@@ -28,40 +25,42 @@ class AppRoutes {
   static Route generateRoute(RouteSettings settings) {
     if (settings.name == '/') {
       return MaterialPageRoute(
-          builder: (context) =>
-              BlocBuilder<AuthBloc, AuthStates>(builder: (context, state) {
-                if (state is AutoLoginState) {
-                  return SplashScreen(title: 'Authenticating');
-                } else if (state is AutoLoginSuccessState) {
-                  isAdmin = state.user.role!.name.toUpperCase() == 'ADMIN';
-                  isAuthenticated = true;
-                } else if (state is AutoLoginFailedState) {
-                  isAuthenticated = false;
-                } else if (state is LoggingOutState) {
-                  return SplashScreen(title: 'Logging out');
-                } else if (state is LoggingOutSuccessState) {
-                  isAuthenticated = false;
-                } else if (state is LoggingOutErrorState) {
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: Text('An Error Occurred!'),
-                      content: Text('Failed to log out'),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text('Okay'),
-                          onPressed: () {
-                            Navigator.of(ctx).pop();
-                          },
-                        )
-                      ],
-                    ),
-                  );
-                }
-                return isAuthenticated
-                    ? (isAdmin ? AdminHome() : UserHome())
-                    : LoginScreen();
-              }));
+        builder: (context) => BlocBuilder<AuthBloc, AuthStates>(
+          builder: (context, state) {
+            if (state is AutoLoginState) {
+              return SplashScreen(title: 'Authenticating');
+            } else if (state is AutoLoginSuccessState) {
+              isAdmin = state.user.role.toUpperCase() == 'ADMIN';
+              isAuthenticated = true;
+            } else if (state is AutoLoginFailedState) {
+              isAuthenticated = false;
+            } else if (state is LoggingOutState) {
+              return SplashScreen(title: 'Logging out');
+            } else if (state is LoggingOutSuccessState) {
+              isAuthenticated = false;
+            } else if (state is LoggingOutErrorState) {
+              showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: Text('An Error Occurred!'),
+                  content: Text('Failed to log out'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text('Okay'),
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                      },
+                    )
+                  ],
+                ),
+              );
+            }
+            return isAuthenticated
+                ? (isAdmin ? AdminHome() : UserHome())
+                : LoginScreen();
+          },
+        ),
+      );
     }
 
     if (settings.name == LoginScreen.routeName) {
@@ -88,33 +87,20 @@ class AppRoutes {
                 resultArgs: resultRoutArgs,
               ));
     }
-    if (settings.name == RoleAdd.routeName) {
-      return MaterialPageRoute(builder: (context) => RoleAdd());
-    }
-    if (settings.name == AdminRoleScreen.routeName) {
-      return MaterialPageRoute(builder: (context) => AdminRoleScreen());
-    }
+
     if (settings.name == AdminUsersScreen.routeName) {
       return MaterialPageRoute(builder: (context) => AdminUsersScreen());
     }
-    if (settings.name == AdminEditUserRole.routeName) {
-      User user = settings.arguments as User;
-      return MaterialPageRoute(
-          builder: (context) => AdminEditUserRole(
-                user: user,
-              ));
-    }
+
     if (settings.name == PasswordChangeScreen.routeName) {
-      User user = settings.arguments as User;
-      print('password change');
-      print(user.fullName.toString());
+      UsersInfo user = settings.arguments as UsersInfo;
       return MaterialPageRoute(
           builder: (context) => PasswordChangeScreen(
                 user: user,
               ));
     }
     if (settings.name == UsernameChangeScreen.routeName) {
-      User user = settings.arguments as User;
+      UsersInfo user = settings.arguments as UsersInfo;
       print('username change');
       return MaterialPageRoute(
           builder: (context) => UsernameChangeScreen(
@@ -166,11 +152,11 @@ class AppRoutes {
 }
 
 class FixtureRoutArgs {
-   Fixture? fixture;
+  Fixture? fixture;
   final bool edit;
 
   FixtureRoutArgs({
-     this.fixture,
+    this.fixture,
     required this.edit,
   });
 }
@@ -181,8 +167,8 @@ class ResultRoutArgs {
   final bool edit;
 
   ResultRoutArgs({
-     this.result,
-     this.fixture,
+    this.result,
+    this.fixture,
     required this.edit,
   });
 }

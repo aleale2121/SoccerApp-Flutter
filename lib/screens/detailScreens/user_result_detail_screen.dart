@@ -11,9 +11,9 @@ class UserResultDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${this.result.result.fixture.clubs[0].name}' +
+        title: Text('${this.result.result.fixture!.firstClub}' +
             "   Vs  " +
-            '${this.result.result.fixture.clubs[1].name}'),
+            '${this.result.result.fixture!.secondClub}'),
       ),
       body: Center(
         child: Column(
@@ -33,9 +33,8 @@ class UserResultDetail extends StatelessWidget {
               height: 10,
             ),
             Text("--------------------------------------------",
-              style: TextStyle(color: Colors.redAccent)
-            ),
-            Text('${this.result.result.fixture.clubs[0].name}' +
+                style: TextStyle(color: Colors.redAccent)),
+            Text('${this.result.result.fixture!.firstClub}' +
                 " Score:  " +
                 '${this.result.result.firstClubScore}'),
             Text(
@@ -45,7 +44,7 @@ class UserResultDetail extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            Text('${this.result.result.fixture.clubs[1].name}' +
+            Text('${this.result.result.fixture!.secondClub}' +
                 " Score:  " +
                 ' ${this.result.result.secondClubScore}'),
             Text(
@@ -55,7 +54,7 @@ class UserResultDetail extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            Text('Scorers ${this.result.result.scorers}'),
+            Text('Scorers ${this.result.result.goals}'),
             // Text('Longtude: ${this.fixture.fixture.stadiumLongitude}'),
             Text(
               "--------------------------------------------",

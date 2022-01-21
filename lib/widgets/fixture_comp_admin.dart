@@ -25,7 +25,7 @@ class FixtureComponentAdmin extends StatelessWidget {
       onTap: () {
         Navigator.of(context).pushNamed(
           AdminFixtureDetail.routeName,
-          arguments:          FixtureRoutArgsForDetail(fixture: fixture),
+          arguments: FixtureRoutArgsForDetail(fixture: fixture),
         );
       },
       child: Container(
@@ -55,71 +55,80 @@ class FixtureComponentAdmin extends StatelessWidget {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: InkWell(
                         onTap: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        child: Column(
                           children: [
-                            Column(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CircleAvatar(
                                   backgroundColor: _randomColor.randomColor(),
                                   radius: 25,
                                   child: Text(
-                                    fixture.clubs[0].name[0].toUpperCase(),
+                                    fixture.firstClub[0].toUpperCase(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 30.0,
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 5,
+                                Column(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.all(10.0),
+                                      child: Text(fixture.matchDate.toString()),
+                                    ),
+                                  ],
                                 ),
-                                Container(
-                                  child: Text(fixture.clubs[0].name),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.all(10.0),
-                                  child: Text(fixture.startingDate.toString()),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Container(
-                                  margin: EdgeInsets.all(10.0),
-                                  child: Text(fixture.stadiumName),
-                                )
-                              ],
-                            ),
-                            Column(
-                              children: [
                                 CircleAvatar(
                                   backgroundColor: _randomColor.randomColor(),
                                   radius: 25,
                                   child: Text(
-                                    fixture.clubs[1].name[0].toUpperCase(),
+                                    fixture.secondClub[0].toUpperCase(),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 30.0,
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Container(
-                                  child: Text(fixture.clubs[1].name),
-                                )
                               ],
                             ),
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    fixture.firstClub.toUpperCase(),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    fixture.stadiumName,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    fixture.secondClub.toUpperCase(),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       ),
@@ -127,95 +136,10 @@ class FixtureComponentAdmin extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 5.0,
+                  height: 15.0,
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     crossAxisAlignment: CrossAxisAlignment.center,
-                //     children: [
-                //       InkWell(
-                //         onTap: () {
-                //           Navigator.of(context).pushNamed(
-                //             ResultAddUpdate.routeName,
-                //             arguments:
-                //                 ResultRoutArgs(fixture: fixture, edit: true),
-                //           );
-                //         },
-                //         child: Container(
-                //           child: Text('ADD RESULT'),
-                //         ),
-                //       ),
-                //       InkWell(
-                //         onTap: () {
-                //           Navigator.of(context).pushNamed(
-                //             FixtureAddUpdate.routeName,
-                //             arguments:
-                //             FixtureRoutArgs(fixture: fixture, edit: true),
-                //           );
-                //         },
-                //         child: Column(
-                //           children: [
-                //             Icon(Icons.update),
-                //             Text(
-                //               "UPDATE",
-                //               style: TextStyle(
-                //                 decoration: TextDecoration.underline,
-                //                 fontWeight: FontWeight.bold,
-                //                 fontStyle: FontStyle.italic,
-                //                 color: Colors.blue,
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //       ),
-                //       InkWell(
-                //         onTap: () {
-                //           BlocProvider.of<FixturesBloc>(context).add(
-                //               DeleteFixtureEvent(
-                //                   fixtureId: fixture.id.toString()));
-                //         },
-                //         child: Column(
-                //           children: [
-                //             Icon(
-                //               Icons.delete_rounded,
-                //               color: Colors.red,
-                //             ),
-                //             Text(
-                //               "DELETE",
-                //               style: TextStyle(
-                //                 fontWeight: FontWeight.bold,
-                //                 fontStyle: FontStyle.italic,
-                //                 decoration: TextDecoration.underline,
-                //                 color: Colors.blue,
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //       ),
-                //       // InkWell(
-                //       //   onTap: () {},
-                //       //   child: Column(
-                //       //     children: [
-                //       //       Icon(Icons.read_more),
-                //       //       Text(
-                //       //         "READ",
-                //       //         style: TextStyle(
-                //       //           decoration: TextDecoration.underline,
-                //       //           fontWeight: FontWeight.bold,
-                //       //           fontStyle: FontStyle.italic,
-                //       //           color: Colors.blue,
-                //       //         ),
-                //       //       ),
-                //       //     ],
-                //       //   ),
-                //       // )
-                //     ],
-                //   ),
-                // ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(4.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -224,46 +148,22 @@ class FixtureComponentAdmin extends StatelessWidget {
                           Navigator.of(context).pushNamed(
                             FixtureAddUpdate.routeName,
                             arguments:
-                            FixtureRoutArgs(fixture: fixture, edit: true),
+                                FixtureRoutArgs(fixture: fixture, edit: true),
                           );
                         },
-                        child: Column(
-                          children: [
-                            Icon(Icons.update),
-                            Text(
-                              "UPDATE",
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
+                        child: Icon(
+                          Icons.edit,
+                          color: Colors.blue,
                         ),
                       ),
                       InkWell(
                         onTap: () {
                           BlocProvider.of<FixturesBloc>(context).add(
-                              DeleteFixtureEvent(
-                                  fixtureId: fixture.id.toString()));
+                              DeleteFixture(fixtureId: fixture.id.toString()));
                         },
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.delete_rounded,
-                              color: Colors.red,
-                            ),
-                            Text(
-                              "DELETE",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                                decoration: TextDecoration.underline,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
+                        child: Icon(
+                          Icons.delete_rounded,
+                          color: Colors.red,
                         ),
                       ),
                       InkWell(
@@ -271,23 +171,10 @@ class FixtureComponentAdmin extends StatelessWidget {
                           Navigator.of(context).pushNamed(
                             ResultAddUpdate.routeName,
                             arguments:
-                            ResultRoutArgs(fixture: fixture, edit: false),
+                                ResultRoutArgs(fixture: fixture, edit: false),
                           );
                         },
-                        child: Column(
-                          children: [
-                            Icon(Icons.add),
-                            Text(
-                              "Add",
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.bold,
-                                fontStyle: FontStyle.italic,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ],
-                        ),
+                        child: Icon(Icons.add),
                       )
                     ],
                   ),

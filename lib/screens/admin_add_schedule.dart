@@ -28,6 +28,7 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
   final _stadiumNameFocusNode = FocusNode();
   final _latitudeFocusNode = FocusNode();
   final _longitudeFocusNode = FocusNode();
+  final _refreeNameFocusNode = FocusNode();
 
   @override
   void dispose() {
@@ -35,6 +36,7 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
     _stadiumNameFocusNode.dispose();
     _latitudeFocusNode.dispose();
     _longitudeFocusNode.dispose();
+    _refreeNameFocusNode.dispose();
 
     super.dispose();
   }
@@ -51,24 +53,32 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
 
     if (widget.fixtureArgs.edit) {
       fixture = Fixture(
-          id: widget.fixtureArgs.fixture!.id,
-          stadiumName: stadiumName,
-          stadiumLatitude: lat,
-          stadiumLongitude: long,
-          startingDate: startingTime,
-          clubs: [clubs[firstClubName]!, clubs[secondClubName]!]);
-
+        id: widget.fixtureArgs.fixture!.id,
+        stadiumName: stadiumName,
+        stadiumLatitude: lat,
+        stadiumLongitude: long,
+        matchDate: startingTime,
+        firstClub: firstClubName,
+        secondClub: secondClubName,
+        refreeName: refreeName,
+      );
+      print(fixture);
+      // return;
       BlocProvider.of<FixturesBloc>(context, listen: false)
-        ..add(UpdateFixtureEvent(fixture: fixture));
+        ..add(UpdateFixture(fixture: fixture));
     } else {
       fixture = Fixture(
-          stadiumName: stadiumName,
-          stadiumLatitude: lat,
-          stadiumLongitude: long,
-          startingDate: startingTime,
-          clubs: [clubs[firstClubName]!, clubs[secondClubName]!]);
+        stadiumName: stadiumName,
+        stadiumLatitude: lat,
+        stadiumLongitude: long,
+        matchDate: startingTime,
+        firstClub: firstClubName,
+        secondClub: secondClubName,
+        refreeName: refreeName,
+      );
+      print(fixture);
       BlocProvider.of<FixturesBloc>(context, listen: false)
-        ..add(PostFixtureEvent(fixture: fixture));
+        ..add(AddFixture(fixture: fixture));
     }
   }
 
@@ -79,6 +89,7 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
   late String firstClubName;
   late String secondClubName;
   late String stadiumName;
+  late String refreeName;
   late double lat;
   late double long;
   late DateTime startingTime;
@@ -96,18 +107,17 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
               : Text("Add Fixture"),
           actions: [
             IconButton(
-                icon: Icon(
-                  Icons.save,
-                  color: Colors.white,
-                ),
-                onPressed: _saveForm)
+              icon: Icon(
+                Icons.save,
+                color: Colors.white,
+              ),
+              onPressed: _saveForm,
+            )
           ],
         ),
         body: BlocConsumer<FixturesBloc, FixtureStates>(
           listener: (_, state) {
             if (state is FixturePostingErrorState) {
-              // _scaffoldKey.currentState.showSnackBar(
-              //     SnackBar(content: Text('Error Adding the fixture')));
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('Error Adding the fixture'),
@@ -123,8 +133,8 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
             }
             if ((state is FixturePostedState) ||
                 (state is FixtureUpdatedState)) {
-              BlocProvider.of<FixturesBloc>(context).add(GetFixturesEvent());
-              BlocProvider.of<ResultsBloc>(context).add(GetResultsEvent());
+              BlocProvider.of<FixturesBloc>(context).add(LoadFixtures());
+              BlocProvider.of<ResultsBloc>(context).add(LoadResults());
               Navigator.pop(context);
             }
           },
@@ -138,7 +148,7 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    BlocBuilder<ClubsBloc, ClubStates>(
+                    BlocBuilder<ClubsBloc, ClubsState>(
                       builder: (_, state) {
                         if (state is ClubsFetchingState) {
                           return Padding(
@@ -171,9 +181,9 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                                 secondClubName = clubNames[1];
                               } else {
                                 firstClubName =
-                                    widget.fixtureArgs.fixture!.clubs[0].name;
+                                    widget.fixtureArgs.fixture!.firstClub;
                                 secondClubName =
-                                    widget.fixtureArgs.fixture!.clubs[1].name;
+                                    widget.fixtureArgs.fixture!.secondClub;
                               }
                               isInit = true;
                             }
@@ -225,12 +235,13 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                                         },
                                         items: clubNames
                                             .map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
+                                          (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value),
+                                            );
+                                          },
+                                        ).toList(),
                                       ),
                               ),
                             ],
@@ -258,7 +269,10 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                           arrivalTime = val;
                         },
                         validator: (val) {
-                          if (val!.isEmpty) {
+                          if (val == null) {
+                            return 'value cannot be empty';
+                          }
+                          if (val.isEmpty) {
                             return 'value cannot be empty';
                           }
                           return null;
@@ -285,7 +299,7 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                               .requestFocus(_stadiumNameFocusNode);
                         },
                         validator: (value) {
-                          if (value==null || value.length < 4) {
+                          if (value == null) {
                             return 'invalid input';
                           }
                           return null;
@@ -318,8 +332,11 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                               .requestFocus(_latitudeFocusNode);
                         },
                         validator: (value) {
-                          if (value==null) {
+                          if (value == null) {
                             return 'value cannot input';
+                          }
+                          if (double.tryParse(value) == null) {
+                            return 'invalid input';
                           }
                           return null;
                         },
@@ -347,8 +364,11 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                         autofocus: false,
                         focusNode: _longitudeFocusNode,
                         validator: (value) {
-                          if (value==null) {
+                          if (value == null) {
                             return 'value cannot input';
+                          }
+                          if (double.tryParse(value) == null) {
+                            return 'invalid input';
                           }
                           return null;
                         },
@@ -365,6 +385,39 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
                             hintText: 'Enter Stadium Longitude'),
                       ),
                     ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(30, 5, 30, 5),
+                      child: TextFormField(
+                        initialValue: widget.fixtureArgs.edit
+                            ? widget.fixtureArgs.fixture!.refreeName:'',
+                        keyboardType: TextInputType.text,
+                        textAlign: TextAlign.left,
+                        autofocus: false,
+                        focusNode: _refreeNameFocusNode,
+                        validator: (value) {
+                          if (value == null) {
+                            return 'value cannot input';
+                          }
+                          return null;
+                        },
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context)
+                              .requestFocus(_refreeNameFocusNode);
+                        },
+                        onSaved: (value) {
+                          if (value != null) {
+                            refreeName = value;
+                          }
+                        },
+                        decoration: new InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Refree Name',
+                            hintText: 'Enter Refree Name'),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -376,8 +429,9 @@ class FixtureAddUpdateState extends State<FixtureAddUpdate> {
   }
 
   Future<bool> _willPopPressed() async {
-    BlocProvider.of<FixturesBloc>(context).add(GetFixturesEvent());
-    BlocProvider.of<ResultsBloc>(context).add(GetResultsEvent());
+    BlocProvider.of<FixturesBloc>(context).add(LoadFixtures());
+    BlocProvider.of<ResultsBloc>(context).add(LoadResults());
+    BlocProvider.of<ClubsBloc>(context).add(LoadClubs());
     Navigator.of(context).pop();
     return true;
   }

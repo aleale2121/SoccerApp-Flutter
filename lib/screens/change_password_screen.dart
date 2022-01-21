@@ -7,7 +7,7 @@ import '../blocs/user/user.dart';
 
 class PasswordChangeScreen extends StatefulWidget {
   static const routeName = "password_change_screen";
-  final User user;
+  final UsersInfo user;
   PasswordChangeScreen({required this.user});
   @override
   PasswordChangeScreenState createState() {
@@ -37,19 +37,17 @@ class PasswordChangeScreenState extends State<PasswordChangeScreen> {
   }
 
   Future<void> _saveForm() async {
-    print(widget.user.fullName);
-    print(widget.user.password);
     final isValid = _formKey.currentState!.validate();
     if (!isValid) {
       return;
     }
     print('valid');
     _formKey.currentState!.save();
-    User userUpdated = widget.user;
+    UsersInfo userUpdated = widget.user;
     userUpdated.password = newPassword;
     BlocProvider.of<UserBloc>(context, listen: false)
       ..add(
-          UpdateUserPasswordEvent(user: userUpdated, oldPassword: oldPassword));
+          Updatepassword(userInfo: userUpdated, oldPassword: oldPassword));
   }
 
   @override

@@ -1,39 +1,57 @@
-import 'package:flutter/foundation.dart';
+import 'package:equatable/equatable.dart';
+
 import '../../models/model.dart';
 
-abstract class AuthStates {}
+abstract class AuthStates extends Equatable {
+  const AuthStates();
+  @override
+  List<Object> get props => [];
+}
 
 class AuthUninitializedState extends AuthStates {}
 
 class AutoLoginState extends AuthStates {}
 
 class AutoLoginSuccessState extends AuthStates {
-  final User user;
+  final UsersInfo user;
   AutoLoginSuccessState({required this.user});
+
+  @override
+  List<Object> get props => [user];
 }
 
 class AutoLoginFailedState extends AuthStates {
   final String message;
   AutoLoginFailedState({required this.message});
+
+  @override
+  List<Object> get props => [message];
 }
 
 class LoggingState extends AuthStates {}
 
 class LoginSuccessState extends AuthStates {
-  final User user;
+  final UsersInfo user;
   LoginSuccessState({required this.user});
+
+  @override
+  List<Object> get props => [user];
 }
 
 class LoginFailedState extends AuthStates {
   final String message;
   LoginFailedState({required this.message});
+  @override
+  List<Object> get props => [message];
 }
 
 class SigningUpState extends AuthStates {}
 
 class SignUpSuccessState extends AuthStates {
-  final User user;
+  final UsersInfo user;
   SignUpSuccessState({required this.user});
+  @override
+  List<Object> get props => [user];
 }
 
 class EmailAlreadyExistState extends AuthStates {}
@@ -47,6 +65,8 @@ class InvalidInputState extends AuthStates {}
 class SignUpFailedState extends AuthStates {
   final String message;
   SignUpFailedState({required this.message});
+  @override
+  List<Object> get props => [message];
 }
 
 class LoggingOutState extends AuthStates {}

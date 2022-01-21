@@ -1,7 +1,12 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import '../../models/result.dart';
 
-abstract class ResultStates {}
+abstract class ResultStates extends Equatable {
+  const ResultStates();
+  @override
+  List<Object> get props => [];
+}
 
 class ResultUninitializedState extends ResultStates {}
 
@@ -10,12 +15,17 @@ class ResultsFetchingState extends ResultStates {}
 class ResultsFetchedState extends ResultStates {
   final List<Result> results;
   ResultsFetchedState({required this.results});
+  @override
+  List<Object> get props => [results];
 }
 
 class ResultsFetchingErrorState extends ResultStates {
-  final String? message;
+  final String message;
 
-  ResultsFetchingErrorState({this.message});
+  ResultsFetchingErrorState({required this.message});
+
+  @override
+  List<Object> get props => [message];
 }
 
 class ResultDeletingState extends ResultStates {}
@@ -23,9 +33,12 @@ class ResultDeletingState extends ResultStates {}
 class ResultDeletedState extends ResultStates {}
 
 class ResultsDeletingErrorState extends ResultStates {
-  final String? message;
+  final String message;
 
-  ResultsDeletingErrorState({this.message});
+  ResultsDeletingErrorState({required this.message});
+
+  @override
+  List<Object> get props => [];
 }
 
 class ResultPostingState extends ResultStates {}
@@ -33,9 +46,12 @@ class ResultPostingState extends ResultStates {}
 class ResultPostedState extends ResultStates {}
 
 class ResultPostingErrorState extends ResultStates {
-  final String? message;
+  final String message;
 
-  ResultPostingErrorState({this.message});
+  ResultPostingErrorState({required this.message});
+
+  @override
+  List<Object> get props => [];
 }
 
 class ResultUpdatingState extends ResultStates {}
@@ -43,8 +59,11 @@ class ResultUpdatingState extends ResultStates {}
 class ResultUpdatedState extends ResultStates {}
 
 class ResultUpdatingErrorState extends ResultStates {
-  final String? message;
-  ResultUpdatingErrorState({this.message});
+  final String message;
+  ResultUpdatingErrorState({required this.message});
+
+  @override
+  List<Object> get props => [];
 }
 
 class ResultsEmptyState extends ResultStates {}

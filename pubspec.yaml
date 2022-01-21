@@ -12,8 +12,16 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.4
+
+  firebase_auth: ^3.3.4
+  firebase_core: ^1.10.6
+  cloud_firestore: ^3.1.5
+  firebase_storage: ^10.2.4
+  uuid: ^3.0.5
+  permission_handler: ^8.3.0
+  path: ^1.8.0
   http: ^0.13.4
-  flutter_bloc: ^8.0.0
+  flutter_bloc: ^8.0.1
   equatable: ^2.0.3
   date_time_picker: ^2.1.0
   shared_preferences: ^2.0.11
@@ -21,8 +29,8 @@ dependencies:
   random_color: ^1.0.6-nullsafety
   mockito: ^5.0.17
   faker: ^2.0.0
-
-
+  flutter_secure_storage: ^5.0.2
+  path_provider: ^2.0.8
 dev_dependencies:
   flutter_test:
     sdk: flutter

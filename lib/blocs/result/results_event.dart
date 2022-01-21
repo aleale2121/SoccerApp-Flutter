@@ -1,33 +1,41 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import '../../models/result.dart';
 
-abstract class ResultsEvent extends Equatable {}
-
-class GetResultsEvent extends ResultsEvent {
-  GetResultsEvent();
+abstract class ResultsEvent extends Equatable {
+  const ResultsEvent();
   @override
   List<Object> get props => [];
 }
 
-class PostResultEvent extends ResultsEvent {
+class LoadResults extends ResultsEvent {}
+
+class AddResult extends ResultsEvent {
   final Result result;
-  PostResultEvent({required this.result});
+  const AddResult({required this.result});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [result];
 }
 
-class UpdateResultEvent extends ResultsEvent {
+class UpdateResult extends ResultsEvent {
   final Result result;
-  UpdateResultEvent({required this.result});
+  const UpdateResult({required this.result});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [result];
 }
 
-class DeleteResultEvent extends ResultsEvent {
+class DeleteResult extends ResultsEvent {
   final String resultId;
-  DeleteResultEvent({required this.resultId});
+  const DeleteResult({required this.resultId});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [resultId];
+}
+
+class ResultsUpdated extends ResultsEvent {
+  final List<Result> results;
+  const ResultsUpdated({
+    required this.results,
+  });
+  @override
+  List<Object> get props => [results];
 }

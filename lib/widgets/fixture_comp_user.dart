@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:random_color/random_color.dart';
 import 'package:soccer_app/screens/detailScreens/user_fixture_detail_screen.dart';
@@ -57,7 +56,7 @@ class FixtureComponent extends StatelessWidget {
                             backgroundColor: _randomColor.randomColor(),
                             radius: 25,
                             child: Text(
-                              fixture.clubs[0].name[0].toUpperCase(),
+                              fixture.firstClub[0].toUpperCase(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 30.0,
@@ -68,7 +67,7 @@ class FixtureComponent extends StatelessWidget {
                             height: 5,
                           ),
                           Container(
-                            child: Text(fixture.clubs[0].name),
+                            child: Text(fixture.firstClub),
                           )
                         ],
                       ),
@@ -76,7 +75,7 @@ class FixtureComponent extends StatelessWidget {
                         children: [
                           Container(
                             margin: EdgeInsets.all(10.0),
-                            child: Text(fixture.startingDate.toString()),
+                            child: Text(fixture.matchDate.toString()),
                           ),
                           SizedBox(
                             height: 5,
@@ -93,7 +92,7 @@ class FixtureComponent extends StatelessWidget {
                             backgroundColor: _randomColor.randomColor(),
                             radius: 25,
                             child: Text(
-                              fixture.clubs[1].name[0].toUpperCase(),
+                              fixture.secondClub[0].toUpperCase(),
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 30.0,
@@ -104,7 +103,7 @@ class FixtureComponent extends StatelessWidget {
                             height: 5,
                           ),
                           Container(
-                            child: Text(fixture.clubs[1].name),
+                            child: Text(fixture.secondClub),
                           )
                         ],
                       ),

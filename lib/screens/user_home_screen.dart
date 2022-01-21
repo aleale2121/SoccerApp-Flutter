@@ -30,6 +30,7 @@ class _UserHomeState extends State<UserHome>
     super.dispose();
   }
 
+  final Util util = Util();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,11 +55,12 @@ class _UserHomeState extends State<UserHome>
                       child: TextButton(
                         child: Text('Change Password'),
                         onPressed: () async {
-                          Util util = new Util();
-                          User user = await util.getUserInformation();
-                          Navigator.of(context).pushNamed(
-                              PasswordChangeScreen.routeName,
-                              arguments: user);
+                          UsersInfo? user = await util.getUserInformation();
+                          if (user != null) {
+                            Navigator.of(context).pushNamed(
+                                PasswordChangeScreen.routeName,
+                                arguments: user);
+                          }
                         },
                       ),
                       value: 1,
@@ -68,10 +70,12 @@ class _UserHomeState extends State<UserHome>
                         child: Text('Change Username'),
                         onPressed: () async {
                           Util util = new Util();
-                          User user = await util.getUserInformation();
-                          Navigator.of(context).pushNamed(
-                              UsernameChangeScreen.routeName,
-                              arguments: user);
+                          UsersInfo? user = await util.getUserInformation();
+                          if (user != null) {
+                            Navigator.of(context).pushNamed(
+                                UsernameChangeScreen.routeName,
+                                arguments: user);
+                          }
                         },
                       ),
                       value: 1,
@@ -80,7 +84,9 @@ class _UserHomeState extends State<UserHome>
                       child: TextButton(
                         child: Text('Delete Account'),
                         onPressed: () async {
-                          Navigator.of(context).pushNamed(DeleteAccountPage.routeName,);
+                          Navigator.of(context).pushNamed(
+                            DeleteAccountPage.routeName,
+                          );
                         },
                       ),
                       value: 3,

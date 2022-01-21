@@ -1,70 +1,55 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:soccer_app/models/custom_exception.dart';
 import '../../repository/repository.dart';
 import '../../models/user.dart';
-import '../../models/http_exception.dart';
 import '../../repository/user_repository.dart';
 import 'user_states.dart';
 import 'user_events.dart';
 
-class UserBloc extends Bloc<UserEvents, UserStates> {
-  final UserRepository userRepository;
+class UserBloc extends Bloc<UsersEvent, UserStates> {
+  final UserRepository _userRepository;
+  UserBloc({required UserRepository userRepository})
+      : _userRepository = userRepository,
+        super(UserUninitializedState()) {
+    on<LoadUsers>(_onLoadUsers);
+    on<UpdateUser>(_onUpdateUser);
+    on<Updatepassword>(_onUpdatePassword);
+    on<UsersUpdated>(_onUsersUpdated);
+  }
 
-  UserBloc({required this.userRepository}) : super(UserUninitializedState());
+  Future<void> _onLoadUsers(LoadUsers event, Emitter<UserStates> emit) {
+    return emit.onEach<List<UsersInfo>>(
+      _userRepository.users(),
+      onData: (users) => add(UsersUpdated(users: users)),
+    );
+  }
 
-  
-  Stream<UserStates> mapEventToState(UserEvents event) async* {
-    if (event is GetUsersEvent) {
-      yield* _mapGetUsersEventToState();
-    } else if (event is UpdateUserEvent) {
-      yield* _mapUpdateUserEventToState(event.user);
-    } else if (event is UpdateUserPasswordEvent) {
-      yield* _mapUpdatePasswordEventToState(event.user, event.oldPassword);
+  void _onUpdateUser(UpdateUser event, Emitter<UserStates> emit) {
+    emit(UserUpdatingState());
+    try {
+      _userRepository.updateUser(event.user);
+      emit(UserUpdatedState());
+    } on CustomException catch (e) {
+      emit(UserUpdatingErrorState(message: e.cause));
+    } catch (e) {
+      emit(UserUpdatingErrorState(message: "Failed To Update User"));
     }
   }
 
-  Stream<UserStates> _mapGetUsersEventToState() async* {
-    yield UsersFetchingState();
+  void _onUpdatePassword(Updatepassword event, Emitter<UserStates> emit) {
+    emit(UserUpdatingState());
     try {
-      List<User> users = await userRepository.getUsers();
-      if (users.length == 0) {
-        yield UsersEmptyState();
-      } else {
-        yield UsersFetchedState(users: users);
-      }
-    } on HttpException catch (e) {
-      yield UsersFetchingErrorState(message: e.message);
+      _userRepository.updatePassword(event.userInfo);
+      emit(UserUpdatedState());
+    } on CustomException catch (e) {
+      emit(UserUpdatingErrorState(message: e.cause));
     } catch (e) {
-      yield UsersFetchingErrorState();
+      emit(UserUpdatingErrorState(message: "Failed To Update Password"));
     }
   }
 
-  Stream<UserStates> _mapUpdateUserEventToState(User user) async* {
-    yield UserUpdatingState();
-    try {
-      await userRepository.updateUser(user);
-      yield UserUpdatedState();
-    } on HttpException catch (e) {
-      yield UserUpdatingErrorState(message: e.message);
-    } catch (e) {
-      yield UserUpdatingErrorState();
-    }
-  }
-
-  Stream<UserStates> _mapUpdatePasswordEventToState(
-      User user, String oldPass) async* {
-    yield UserUpdatingState();
-    try {
-      await userRepository.updateUserPassword(user, oldPass);
-      yield UserUpdatedState();
-    } on HttpException catch (e) {
-      if (e.toString() == 'Incorrect Old Password') {
-        yield UserIncorrectOldPasswordState();
-      } else {
-        yield UserUpdatingErrorState(message: e.message);
-      }
-    } catch (e) {
-      yield UserUpdatingErrorState();
-    }
+  void _onUsersUpdated(UsersUpdated event, Emitter<UserStates> emit) {
+    emit(UsersFetchedState(users: event.users));
   }
 }

@@ -1,78 +1,68 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:soccer_app/models/custom_exception.dart';
 import '../../models/club.dart';
-import '../../models/http_exception.dart';
 import '../../repository/club_repository.dart';
 import 'clubs_event.dart';
 import 'clubs_state.dart';
 
-class ClubsBloc extends Bloc<ClubEvents, ClubStates> {
-  final ClubRepository clubsRepository;
+class ClubsBloc extends Bloc<ClubEvents, ClubsState> {
+  final ClubRepository _clubsRepository;
 
-  ClubsBloc({required this.clubsRepository}) : super(ClubUninitializedState());
+  ClubsBloc({required ClubRepository clubsRepository})
+      : _clubsRepository = clubsRepository,
+        super(ClubsFetchingState()) {
+    on<LoadClubs>(_onLoadTodos);
+    on<PostClub>(_onAddTodo);
+    on<UpdateClub>(_onUpdateTodo);
+    on<DeleteClub>(_onDeleteTodo);
+    on<ClubsUpdated>(_onClubsUpdated);
+  }
 
+  Future<void> _onLoadTodos(LoadClubs event, Emitter<ClubsState> emit) {
+    return emit.onEach<List<Club>>(
+      _clubsRepository.clubs(),
+      onData: (clubs) => add(ClubsUpdated(clubs: clubs)),
+    );
+  }
 
-  Stream<ClubStates> mapEventToState(ClubEvents event) async* {
-    if (event is GetClubsEvent) {
-      yield* _mapGetClubsEventToState();
-    } else if (event is PostClubEvent) {
-      yield* _mapPostClubsEventToState(event.club);
-    } else if (event is UpdateClubEvent) {
-      yield* _mapUpdateClubEventToState(event.club);
-    } else if (event is DeleteClubEvent) {
-      yield* _mapDeleteClubEventToState(event.clubId);
+  void _onAddTodo(PostClub event, Emitter<ClubsState> emit) {
+    emit(ClubPostingState());
+    try {
+      _clubsRepository.addClub(event.club);
+      emit(ClubPostedState());
+    } on CustomException catch (e) {
+      emit(ClubPostingErrorState(message: e.cause));
+    } catch (e) {
+      emit(ClubPostingErrorState(message: "Failed To Add Club"));
     }
   }
 
-  Stream<ClubStates> _mapGetClubsEventToState() async* {
-    yield ClubsFetchingState();
+  void _onUpdateTodo(UpdateClub event, Emitter<ClubsState> emit) {
+    emit(ClubUpdatingState());
     try {
-      List<Club> clubs = await clubsRepository.getAndSetClubs();
-      if (clubs.length == 0) {
-        yield ClubsEmptyState();
-      } else {
-        yield ClubFetchedState(clubs: clubs);
-      }
-    } on HttpException catch (e) {
-      yield ClubsFetchingErrorState(message: e.message);
+      _clubsRepository.updateClub(event.club);
+      emit(ClubUpdatedState());
+    } on CustomException catch (e) {
+      emit(ClubUpdatingErrorState(message: e.cause));
     } catch (e) {
-      yield ClubsFetchingErrorState(message: "fetching");
+      emit(ClubUpdatingErrorState(message: "Failed To Update Clube"));
     }
   }
 
-  Stream<ClubStates> _mapPostClubsEventToState(Club club) async* {
-    yield ClubPostingState();
+  void _onDeleteTodo(DeleteClub event, Emitter<ClubsState> emit) {
+    emit(ClubDeletingState());
     try {
-      await clubsRepository.postClub(club);
-      yield ClubPostedState();
-    } on HttpException catch (e) {
-      yield ClubPostingErrorState(message: e.message);
+      _clubsRepository.deleteClub(event.clubId);
+      emit(ClubDeletedState());
+    } on CustomException catch (e) {
+      emit(ClubsDeletingErrorState(message: e.cause));
     } catch (e) {
-      yield ClubPostingErrorState(message: "");
+      emit(ClubsDeletingErrorState(message: "Failed To Delete Club"));
     }
   }
 
-  Stream<ClubStates> _mapUpdateClubEventToState(Club club) async* {
-    yield ClubUpdatingState();
-    try {
-      await clubsRepository.putClub(club);
-      yield ClubUpdatedState();
-    } on HttpException catch (e) {
-      yield ClubUpdatingErrorState(message: e.message);
-    } catch (e) {
-      yield ClubUpdatingErrorState(message: "");
-    }
-  }
-
-  Stream<ClubStates> _mapDeleteClubEventToState(String clubId) async* {
-    yield ClubDeletingState();
-    try {
-      await clubsRepository.deleteClub(clubId);
-      yield ClubDeletedState();
-    } on HttpException catch (e) {
-      yield ClubsDeletingErrorState(message: e.message);
-    } catch (e) {
-      yield ClubsDeletingErrorState(message: "");
-    }
+  void _onClubsUpdated(ClubsUpdated event, Emitter<ClubsState> emit) {
+    emit(ClubFetchedState(clubs: event.clubs));
   }
 }

@@ -1,30 +1,26 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
-import 'package:soccer_app/models/login_request.dart';
 import '../../models/model.dart';
 
-abstract class AuthEvents extends Equatable {}
-
-class AutoLoginEvent extends AuthEvents {
+abstract class AuthEvents extends Equatable {
+  const AuthEvents();
   @override
   List<Object> get props => [];
 }
+
+class AutoLoginEvent extends AuthEvents {}
 
 class LoginEvent extends AuthEvents {
   final LoginRequestModel user;
   LoginEvent({required this.user});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [user];
 }
 
 class SignUpEvent extends AuthEvents {
-  final User user;
+  final UsersInfo user;
   SignUpEvent({required this.user});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [user];
 }
 
-class LogOutEvent extends AuthEvents {
-  @override
-  List<Object> get props => [];
-}
+class LogOutEvent extends AuthEvents {}

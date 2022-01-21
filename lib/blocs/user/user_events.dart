@@ -1,41 +1,49 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import '../../models/model.dart';
 
-abstract class UserEvents extends Equatable {}
-
-class GetUsersEvent extends UserEvents {
-  GetUsersEvent();
+abstract class UsersEvent extends Equatable {
+  const UsersEvent();
   @override
   List<Object> get props => [];
 }
 
-class PostUserEvent extends UserEvents {
-  final User user;
-  PostUserEvent({required this.user});
+class LoadUsers extends UsersEvent {}
+
+class AddUser extends UsersEvent {
+  final UsersInfo user;
+  AddUser({required this.user});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [user];
 }
 
-class UpdateUserEvent extends UserEvents {
-  final User user;
-  UpdateUserEvent({required this.user});
+class UpdateUser extends UsersEvent {
+  final UsersInfo user;
+  const UpdateUser({required this.user});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [user];
 }
 
-class DeleteUserEvent extends UserEvents {
+class DeleteUser extends UsersEvent {
   final String userId;
-  DeleteUserEvent({required this.userId});
+  const DeleteUser({required this.userId});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [userId];
 }
 
-class UpdateUserPasswordEvent extends UserEvents {
-  final User user;
+class Updatepassword extends UsersEvent {
+  final UsersInfo userInfo;
   final String oldPassword;
-  UpdateUserPasswordEvent({required this.oldPassword, required this.user});
+  const Updatepassword({required this.oldPassword, required this.userInfo});
   @override
-  List<Object> get props => [];
+  List<Object> get props => [userInfo, oldPassword];
+}
+
+class UsersUpdated extends UsersEvent {
+  final List<UsersInfo> users;
+  const UsersUpdated({
+    required this.users,
+  });
+  @override
+  List<Object> get props => [users];
 }

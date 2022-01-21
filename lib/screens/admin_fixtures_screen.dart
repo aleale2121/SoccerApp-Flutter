@@ -44,7 +44,11 @@ class AdminFixturesScreen extends StatelessWidget {
           return SplashScreen(title: 'Fetching Fixtures');
         } else if (state is FixturesFetchedState) {
           final fixtures = state.fixtures;
-
+          if (fixtures.length == 0) {
+            return Center(
+              child: Text('No Fixtures'),
+            );
+          }
           return ListView.builder(
               padding: EdgeInsets.all(8.0),
               itemCount: fixtures.length,

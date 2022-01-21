@@ -7,7 +7,7 @@ import '../blocs/user/user.dart';
 
 class UsernameChangeScreen extends StatefulWidget {
   static const routeName = "username_change_screen";
-  final User user;
+  final UsersInfo user;
   UsernameChangeScreen({required this.user});
   @override
   UsernameChangeScreenState createState() {
@@ -43,11 +43,11 @@ class UsernameChangeScreenState extends State<UsernameChangeScreen> {
       return;
     }
     _formKey.currentState!.save();
-    User userUpdated = widget.user;
+    UsersInfo userUpdated = widget.user;
     userUpdated.email = newUsername;
 
     BlocProvider.of<UserBloc>(context, listen: false)
-      ..add(UpdateUserEvent(user: userUpdated));
+      ..add(UpdateUser(user: userUpdated));
   }
 
   @override

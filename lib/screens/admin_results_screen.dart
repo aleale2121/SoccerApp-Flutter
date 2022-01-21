@@ -14,19 +14,18 @@ class AdminResultsScreen extends StatelessWidget {
     return BlocConsumer<ResultsBloc, ResultStates>(
       listener: (_, state) {
         if (state is ResultDeletingState) {
-           ScaffoldMessenger.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Deleting result'),
             ),
           );
         }
         if (state is ResultDeletedState) {
-
           BlocProvider.of<ResultsBloc>(context, listen: false)
-              .add(GetResultsEvent());
+              .add(LoadResults());
         }
         if (state is ResultsDeletingErrorState) {
-           ScaffoldMessenger.of(context).showSnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Failed to delete result'),
             ),
@@ -37,8 +36,14 @@ class AdminResultsScreen extends StatelessWidget {
         if (state is ResultsFetchingState) {
           return SplashScreen(title: 'Fetching Results');
         } else if (state is ResultsFetchedState) {
-          final results = state.results;
+          print("fixture fetched");
 
+          final results = state.results;
+          if (results.length == 0) {
+            return Center(
+              child: Text('No Result'),
+            );
+          }
           return ListView.builder(
               padding: EdgeInsets.all(8.0),
               itemCount: results.length,
