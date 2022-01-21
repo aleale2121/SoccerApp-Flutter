@@ -6,21 +6,25 @@ class Club {
   String? id;
   final String name;
   String? logoUrl;
+  String? location;
   Club({
     this.id,
     required this.name,
     this.logoUrl,
+    this.location,
   });
 
   Club copyWith({
     String? id,
     String? name,
     String? logoUrl,
+    String? location,
   }) {
     return Club(
       id: id ?? this.id,
       name: name ?? this.name,
       logoUrl: logoUrl ?? this.logoUrl,
+      location: location ?? this.location,
     );
   }
 
@@ -29,6 +33,7 @@ class Club {
       'id': id,
       'name': name,
       'logoUrl': logoUrl,
+      'location': location,
     };
   }
 
@@ -43,6 +48,7 @@ class Club {
       id: map['id'],
       name: map['name'] ?? '',
       logoUrl: map['logoUrl'],
+      location: map['location'],
     );
   }
 
@@ -58,7 +64,9 @@ class Club {
   }
 
   @override
-  String toString() => 'Club(id: $id, name: $name, logoUrl: $logoUrl)';
+  String toString() {
+    return 'Club(id: $id, name: $name, logoUrl: $logoUrl, location: $location)';
+  }
 
   @override
   bool operator ==(Object other) {
@@ -67,9 +75,15 @@ class Club {
     return other is Club &&
       other.id == id &&
       other.name == name &&
-      other.logoUrl == logoUrl;
+      other.logoUrl == logoUrl &&
+      other.location == location;
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ logoUrl.hashCode;
+  int get hashCode {
+    return id.hashCode ^
+      name.hashCode ^
+      logoUrl.hashCode ^
+      location.hashCode;
+  }
 }
