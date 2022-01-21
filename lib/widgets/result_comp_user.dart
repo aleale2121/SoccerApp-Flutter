@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:soccer_app/screens/view_result_detail_screen/user_result_detail_screen.dart';
+import 'package:soccer_app/view/view_result_detail_screen/user_result_detail_screen.dart';
 import 'package:soccer_app/route/route.dart';
 import '../models/model.dart';
 import 'package:random_color/random_color.dart';

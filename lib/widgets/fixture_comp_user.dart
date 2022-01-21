@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:random_color/random_color.dart';
-import 'package:soccer_app/screens/view_fixture_detail_screen/user_fixture_detail_screen.dart';
+import 'package:soccer_app/view/view_fixture_detail_screen/user_fixture_detail_screen.dart';
 import 'package:soccer_app/route/route.dart';
 import '../models/model.dart';
 

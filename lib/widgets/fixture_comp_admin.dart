@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:soccer_app/blocs/fixture/fixtures_bloc.dart';
 import 'package:soccer_app/blocs/fixture/fixtures_event.dart';
-import 'package:soccer_app/blocs/result/results_bloc.dart';
-import 'package:soccer_app/screens/edit_fixture_screen/admin_add_schedule.dart';
-import 'package:soccer_app/screens/view_fixture_detail_screen/admin_fixture_detail_screen.dart';
-import '../screens/edit_result_screen/admin_add_result.dart';
+import 'package:soccer_app/view/edit_fixture_screen/admin_add_schedule.dart';
+import 'package:soccer_app/view/view_fixture_detail_screen/admin_fixture_detail_screen.dart';
+import '../view/edit_result_screen/admin_add_result.dart';
 import '../route/route.dart';
 import '../models/model.dart';
 import 'package:random_color/random_color.dart';
