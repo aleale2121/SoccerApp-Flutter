@@ -1,9 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:soccer_app/screens/users_screen/admin_users_screen.dart';
-import 'package:soccer_app/screens/auth_screens/change_password_screen.dart';
-import 'package:soccer_app/screens/auth_screens/change_username_screen.dart';
-import 'package:soccer_app/screens/auth_screens/user_delete_account.dart';
+import 'package:soccer_app/view/users_screen/admin_users_screen.dart';
+import 'package:soccer_app/view/auth_screens/change_password_screen.dart';
+import 'package:soccer_app/view/auth_screens/change_username_screen.dart';
+import 'package:soccer_app/view/auth_screens/user_delete_account.dart';
 import '../models/model.dart';
 import '../blocs/auth/auth.dart';
 import '../view/view_fixture_detail_screen/admin_fixture_detail_screen.dart';

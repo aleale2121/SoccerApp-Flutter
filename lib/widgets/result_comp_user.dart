@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soccer_app/view/shared/circular_image.dart';
 import 'package:soccer_app/view/view_result_detail_screen/user_result_detail_screen.dart';
 import 'package:soccer_app/route/route.dart';
 import '../models/model.dart';
@@ -16,7 +17,7 @@ class ResultComponent extends StatelessWidget {
       onTap: () {
         Navigator.of(context).pushNamed(
           UserResultDetail.routeName,
-          arguments:ResultRoutArgsForDetail(result: result),
+          arguments: ResultRoutArgsForDetail(result: result),
         );
       },
       child: Container(
@@ -52,17 +53,11 @@ class ResultComponent extends StatelessWidget {
                     children: [
                       Column(
                         children: [
-                          CircleAvatar(
-                            backgroundColor: _randomColor.randomColor(),
+                          CircularImage(
+                            placeholderText: result.fixture!.firstClub[0].toUpperCase(),
                             radius: 25,
-                            child: Text(
-                              result.fixture!.firstClub[0].toUpperCase(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30.0,
-                              ),
-                            ),
                           ),
+
                           SizedBox(
                             height: 5,
                           ),
@@ -115,16 +110,10 @@ class ResultComponent extends StatelessWidget {
                       ),
                       Column(
                         children: [
-                          CircleAvatar(
-                            backgroundColor: _randomColor.randomColor(),
+                          CircularImage(
+                            placeholderText:
+                                result.fixture!.secondClub[0].toUpperCase(),
                             radius: 25,
-                            child: Text(
-                              result.fixture!.secondClub[1].toUpperCase(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30.0,
-                              ),
-                            ),
                           ),
                           SizedBox(
                             height: 5,

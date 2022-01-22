@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:soccer_app/view/shared/circular_image.dart';
 import 'package:soccer_app/view/view_result_detail_screen/admin_result_detail_screen.dart';
 import '../blocs/result/result.dart';
 import '../view/edit_result_screen/admin_add_result.dart';
@@ -61,17 +62,10 @@ class ResultComponentAdmin extends StatelessWidget {
                           children: [
                             Column(
                               children: [
-                                CircleAvatar(
-                                  backgroundColor: _randomColor.randomColor(),
+                                CircularImage(
+                                  placeholderText: result.fixture!.firstClub[0]
+                                      .toUpperCase(),
                                   radius: 25,
-                                  child: Text(
-                                    result.fixture!.firstClub[0]
-                                        .toUpperCase(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30.0,
-                                    ),
-                                  ),
                                 ),
                                 SizedBox(
                                   height: 5,
@@ -127,18 +121,10 @@ class ResultComponentAdmin extends StatelessWidget {
                             ),
                             Column(
                               children: [
-                                CircleAvatar(
-                                  backgroundColor: _randomColor.randomColor(),
-                                  radius: 25,
-                                  child: Text(
-                                    result.fixture!.secondClub[0]
-                                        .toUpperCase(),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30.0,
-                                    ),
-                                  ),
-                                ),
+                                CircularImage(
+                            placeholderText: result.fixture!.secondClub[0].toUpperCase(),
+                            radius: 25,
+                          ),
                                 SizedBox(
                                   height: 5,
                                 ),
@@ -187,8 +173,7 @@ class ResultComponentAdmin extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           BlocProvider.of<ResultsBloc>(context).add(
-                              DeleteResult(
-                                  resultId: result.id.toString()));
+                              DeleteResult(resultId: result.id.toString()));
                         },
                         child: Column(
                           children: [
