@@ -4,9 +4,22 @@ class RoundedButton extends StatelessWidget {
   final Color colour;
   final String title;
   final Function onPressed;
-
-  RoundedButton(
-      {required this.colour, required this.title, required this.onPressed});
+  final double width;
+  final double height;
+  final double elevation;
+  final double radius;
+  final double padding;
+  RoundedButton({
+    Key? key,
+    required this.colour,
+    required this.title,
+    required this.onPressed,
+    required this.width,
+    required this.height,
+    required this.elevation,
+    required this.radius,
+    required this.padding,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

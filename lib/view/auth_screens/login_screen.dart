@@ -20,9 +20,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
-   String? email;
+  String? email;
 
-   String? password;
+  String? password;
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +119,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 24.0,
                   ),
                   RoundedButton(
+                    padding: 16.0,
+                    radius: 30.0,
+                    elevation: 5.0,
+                    width:200.0,
+                    height: 40.0,
                     title: 'Log In',
                     colour: Colors.lightBlueAccent,
                     onPressed: () {
@@ -126,10 +131,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (!form!.validate()) {
                         return;
                       }
-                      if (email==null || password==null) {
+                      if (email == null || password == null) {
                         return;
                       }
-                      LoginRequestModel user = new LoginRequestModel(email: email!, password: password!);
+                      LoginRequestModel user = new LoginRequestModel(
+                          email: email!, password: password!);
                       LoginEvent loginEvent = new LoginEvent(user: user);
                       BlocProvider.of<AuthBloc>(context).add(loginEvent);
                     },

@@ -21,7 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late String email;
   late String phone;
   late String password;
-   String role='user';
+  String role = 'user';
 
   @override
   build(BuildContext context) {
@@ -138,6 +138,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         height: 8,
                       ),
                       RoundedButton(
+                        padding: 16.0,
+                        radius: 30.0,
+                        elevation: 5.0,
+                        width: 200.0,
+                        height: 40.0,
                         title: 'Sign Up',
                         colour: Colors.lightBlueAccent,
                         onPressed: () {
