@@ -6,9 +6,6 @@ import '../blocs/result/result.dart';
 import '../view/edit_result_screen/admin_add_result.dart';
 import '../route/route.dart';
 import '../models/model.dart';
-import 'package:random_color/random_color.dart';
-
-RandomColor _randomColor = RandomColor();
 
 class ResultComponentAdmin extends StatelessWidget {
   final Result result;

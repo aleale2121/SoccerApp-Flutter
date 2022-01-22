@@ -125,7 +125,7 @@ class UserRepository {
   Future<void> signOut() async {
     try {
       await _auth.signOut();
-      await _secureStorage.delete(key: "token");
+      await _secureStorage.deleteAll();
     } catch (e) {
       rethrow;
     }

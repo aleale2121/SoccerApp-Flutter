@@ -5,7 +5,6 @@ import 'package:soccer_app/models/login_request.dart';
 import '../../widgets/rounded_button.dart';
 import '../../constants.dart';
 import '../../blocs/auth/auth.dart';
-import '../../models/user.dart';
 import '../home_screen/admin_home_screen.dart';
 import '../home_screen/user_home_screen.dart';
 import 'signup_screen.dart';

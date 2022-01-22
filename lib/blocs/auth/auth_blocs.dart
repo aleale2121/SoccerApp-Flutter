@@ -14,7 +14,7 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     on<AutoLoginEvent>(_onAutoLogin);
     on<LoginEvent>(_onLogin);
     on<SignUpEvent>(_onSignup);
-    // on<LogOutEvent>();
+    on<LogOutEvent>(_onLogout);
   }
 
   void _onAutoLogin(AutoLoginEvent event, Emitter<AuthStates> emit) async {
@@ -77,5 +77,10 @@ class AuthBloc extends Bloc<AuthEvents, AuthStates> {
     } catch (e) {
       emit(SignUpFailedState(message: "Failed To Signup"));
     }
+  }
+
+  void _onLogout(LogOutEvent event, Emitter<AuthStates> emit) async {
+    await _userRepository.signOut();
+    emit(LoggingOutSuccessState());
   }
 }

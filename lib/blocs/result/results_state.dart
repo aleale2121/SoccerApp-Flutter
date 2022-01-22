@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import '../../models/result.dart';
 
 abstract class ResultStates extends Equatable {
