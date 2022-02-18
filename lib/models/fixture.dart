@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:soccer_app/models/club.dart';
 import 'package:soccer_app/models/result.dart';
 
 class Fixture {
@@ -13,7 +14,9 @@ class Fixture {
   final String firstClub;
   final String secondClub;
   final String status;
-   Result? result;
+  Result? result;
+   Club? clubA;
+   Club? clubB;
   Fixture({
     this.id,
     required this.matchDate,
@@ -25,6 +28,8 @@ class Fixture {
     required this.secondClub,
     this.status = "not started",
     this.result,
+    this.clubA,
+    this.clubB,
   });
 
   Fixture copyWith({
@@ -47,7 +52,7 @@ class Fixture {
       refreeName: refreeName ?? this.refreeName,
       firstClub: firstClub ?? this.firstClub,
       secondClub: secondClub ?? this.secondClub,
-      result: result?? this.result,
+      result: result ?? this.result,
     );
   }
 
@@ -127,7 +132,7 @@ class Fixture {
         other.refreeName == refreeName &&
         other.firstClub == firstClub &&
         other.secondClub == secondClub &&
-        other.result==result;
+        other.result == result;
   }
 
   @override

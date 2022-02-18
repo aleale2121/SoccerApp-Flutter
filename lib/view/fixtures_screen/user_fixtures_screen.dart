@@ -16,7 +16,7 @@ class UserFixturesScreen extends StatelessWidget {
           final fixtures = state.fixtures;
 
           return ListView.builder(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(10.0),
               itemCount: fixtures.length,
               itemBuilder: (_, idx) =>
                   FixtureComponent(fixture: fixtures[idx]));

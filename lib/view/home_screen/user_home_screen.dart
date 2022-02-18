@@ -5,6 +5,7 @@ import 'package:soccer_app/util/util.dart';
 import 'package:soccer_app/view/auth_screens/change_password_screen.dart';
 import 'package:soccer_app/view/auth_screens/change_username_screen.dart';
 import 'package:soccer_app/view/auth_screens/user_delete_account.dart';
+import 'package:soccer_app/view/home_screen/widgets/outline_indicator.dart';
 import 'package:soccer_app/widgets/app_drawer_user.dart';
 
 import '../fixtures_screen/user_fixtures_screen.dart';
@@ -36,11 +37,12 @@ class _UserHomeState extends State<UserHome>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
         elevation: 0,
+        backgroundColor: Colors.grey[50],
         iconTheme: IconThemeData(
-          color: Colors.orange,
+          color: Colors.indigo[900],
           size: 30,
         ), //add this line here
         title: Text(
@@ -50,7 +52,6 @@ class _UserHomeState extends State<UserHome>
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white,
         actions: [
           PopupMenuButton(
               icon: Icon(Icons.more_vert),
@@ -99,43 +100,138 @@ class _UserHomeState extends State<UserHome>
         ],
       ),
       drawer: UserAppDrawer(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 100,
-            child: TabBar(
-              controller: controller,
-              // indicatorColor: Colors.blueAccent,
-              // labelColor: Colors.blueAccent,
-
-              tabs: [
-                Tab(
-                  child: CustomTabBar(
-                    displayText: "MATCHES",
+      body: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 15,
+            ),
+            Header(),
+            SizedBox(
+              height: 15,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                ),
+                child: Material(
+                  color: Colors.white,
+                  elevation: 5.0,
+                  child: Container(
+                    height: 600,
+                    child: Column(
+                      children: [
+                        SizedBox(height: 10),
+                        TabsList(controller: controller),
+                        Container(
+                          height: 400,
+                          child: TabBarView(
+                            controller: controller,
+                            children: [
+                              UserFixturesScreen(),
+                              UserResultsScreen(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                Tab(
-                  child: CustomTabBar(
-                    displayText: "RESULTS",
-                  ),
-                )
-              ],
-            ),
-          ),
-          Expanded(
-            child: Container(
-              height: 600,
-              child: TabBarView(
-                controller: controller,
-                children: [
-                  UserFixturesScreen(),
-                  UserResultsScreen(),
-                ],
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TabsList extends StatelessWidget {
+  const TabsList({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  final TabController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      color: Colors.white,
+      child: TabBar(
+        controller: controller,
+        indicatorSize: TabBarIndicatorSize.label,
+        indicator: OutlineIndicator(
+          color: Colors.blue.shade100,
+          radius: Radius.circular(5),
+          strokeWidth: 2.5,
+        ),
+        tabs: [
+          Tab(
+            child: CustomTabBar(
+              displayText: "MATCHES",
+            ),
           ),
+          Tab(
+            child: CustomTabBar(
+              displayText: "RESULTS",
+            ),
+          )
         ],
+      ),
+    );
+  }
+}
+
+class Header extends StatelessWidget {
+  const Header({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 8.0,
+        left: 8.0,
+        right: 8.0,
+      ),
+      child: Material(
+        elevation: 5.0,
+        color: Colors.white,
+        child: Container(
+          alignment: Alignment.topLeft,
+          height: 100,
+          color: Colors.white,
+          padding: EdgeInsets.symmetric(
+            vertical: 8.0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset("images/betking.jpeg"),
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  "Ethiopia\nPremier League",
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontSize: 28,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -143,30 +239,27 @@ class _UserHomeState extends State<UserHome>
 
 class CustomTabBar extends StatelessWidget {
   final String displayText;
-  final double width;
-  final double height;
   const CustomTabBar({
     Key? key,
     required this.displayText,
-    this.width = 300,
-    this.height = 100,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 5.0,
+      elevation: 2.0,
+      borderRadius: BorderRadius.circular(5.0),
       child: Container(
         alignment: Alignment.center,
-        height: height,
-        width: width,
         decoration: BoxDecoration(
           color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Text(
           displayText,
           style: TextStyle(
             color: Colors.black,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),

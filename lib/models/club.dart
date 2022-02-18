@@ -60,6 +60,8 @@ class Club {
     return Club(
       id: snap.id,
       name: snap.get('name') ?? '',
+      logoUrl: snap.get('logoUrl') ?? '',
+      location: snap.get('location') ?? '',
     );
   }
 

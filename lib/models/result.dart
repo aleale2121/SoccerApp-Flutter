@@ -10,7 +10,7 @@ import '../models/scorer.dart';
 class Result {
   final String? id;
   final String fixtureId;
-  final Fixture? fixture;
+   Fixture? fixture;
   final int firstClubScore;
   final int secondClubScore;
   final List<Goal> goals;

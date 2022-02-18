@@ -17,6 +17,14 @@ class FixtureRepository {
       final list = snapshoot.docs.map(
         (doc) async {
           Fixture fixture = Fixture.fromSnapshoot(doc);
+          Club? clubA = await getClub(fixture.firstClub);
+          Club? clubB = await getClub(fixture.secondClub);
+          fixture.clubA = clubA;
+          fixture.clubB = clubB;
+          print("---------------club A");
+          print(clubA);
+          print("---------------club B");
+          print(clubB);
           if (fixture.status == "live") {
             Result? result = await getResult(fixture.id!);
             fixture.result = result;
@@ -30,9 +38,18 @@ class FixtureRepository {
 
   Future<Fixture?> fixture(String fixtureId) async {
     _firebaseFirestore.collection(fixtureCollection).doc(fixtureId).get().then(
-      (DocumentSnapshot documentSnapshot) {
+      (DocumentSnapshot documentSnapshot) async {
         if (documentSnapshot.exists) {
-          return Fixture.fromSnapshoot(documentSnapshot);
+          Fixture fix = Fixture.fromSnapshoot(documentSnapshot);
+          Club? clubA = await getClub(fix.firstClub);
+          Club? clubB = await getClub(fix.secondClub);
+          fix.clubA = clubA;
+          fix.clubB = clubB;
+          print("---------------club A");
+          print(clubA);
+          print("---------------club B");
+          print(clubB);
+          return fix;
         }
         throw CustomException(cause: 'fixture not found');
       },
@@ -74,5 +91,20 @@ class FixtureRepository {
         throw CustomException(cause: 'result not found');
       },
     ).catchError((error) => throw error);
+  }
+
+  Future<Club?> getClub(String name) async {
+    try {
+      Club? club;
+      await _firebaseFirestore
+          .collection(clubCollection)
+          .where('name', isEqualTo: name)
+          .get()
+          .then((value) => {club = Club.fromSnapshoot(value.docs.first)});
+      return club;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 }

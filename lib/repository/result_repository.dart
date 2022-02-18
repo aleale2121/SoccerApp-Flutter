@@ -20,6 +20,10 @@ class ResultRepository {
         (doc) async {
           Result result = Result.fromSnap(doc);
           Fixture? fixture = await getFixture(result.fixtureId);
+          print("****************************");
+          print(fixture);
+          print("****************************");
+          result.fixture = fixture;
           result = result.copyWith(fixture: fixture);
           return result;
         },
@@ -100,15 +104,24 @@ class ResultRepository {
     Fixture? fix;
     await _firebaseFirestore
         .collection(fixtureCollection)
-        .doc(fixtureId)
+        .doc(fixtureId.trim())
         .get()
         .then(
       (DocumentSnapshot documentSnapshot) {
         if (documentSnapshot.exists) {
           fix = Fixture.fromSnapshoot(documentSnapshot);
+          print("---------------");
+          print(fix);
+          return fix;
         }
       },
-    ).catchError((error) => throw error);
+    ).catchError((error) {
+      print("---------------");
+      print(error);
+      print("---------------");
+
+      throw error;
+    });
     return fix;
   }
 

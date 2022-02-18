@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:random_color/random_color.dart';
+import 'package:firebase_image/firebase_image.dart';
 
 RandomColor _randomColor = RandomColor();
 
@@ -19,13 +20,24 @@ class CircularImage extends StatelessWidget {
     return CircleAvatar(
       backgroundColor: _randomColor.randomColor(),
       radius: radius,
-      child: Text(
-        placeholderText,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 30.0,
-        ),
-      ),
+      child: imageUrl == null
+          ? Text(
+              placeholderText,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30.0,
+              ),
+            )
+          : ClipRRect(
+              borderRadius: BorderRadius.circular(radius),
+              child: Image(
+                image: FirebaseImage(
+                  imageUrl!,
+                ),
+                fit: BoxFit.fill,
+                width: radius * 2,
+              ),
+            ),
     );
   }
 }
