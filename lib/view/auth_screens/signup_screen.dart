@@ -59,13 +59,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       (state is EmailAlreadyExistState)
                           ? Container(
                               child: Center(
-                                  child: Text(
-                              'Email already exist',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
+                                child: Text(
+                                  'Email already exist',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            )))
+                            )
                           : SizedBox(
                               height: 1,
                             ),

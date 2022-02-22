@@ -60,7 +60,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           )
                         : Container(
                             height: 200.0,
-                            child: Image.asset('images/logo.png')),
+                            child: Image.asset('assets/icon/icon.png'),
+                          ),
                   ),
                   (state is LoginFailedState)
                       ? Container(
@@ -121,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: 16.0,
                     radius: 30.0,
                     elevation: 5.0,
-                    width:200.0,
+                    width: 200.0,
                     height: 40.0,
                     title: 'Log In',
                     colour: Colors.lightBlueAccent,
